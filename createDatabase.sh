@@ -1,1 +1,1 @@
-mysql -uroot -e "drop database if exists bd2_grupo0; create database bd2_grupo0;"
+mysql -h 127.0.0.1 -uroot -e "drop database if exists bd2_grupo0; create database bd2_grupo0;"
