@@ -11,8 +11,8 @@ pipelines:
         caches:
           - maven
         script: # Modify the commands below to build your repository.
-          - service mysql start
-          - mysql -uroot -e "drop database if exists bd2_grupo0; create database bd2_grupo0;"
+          - apt-get update && apt-get install -y unzip mysql-client          
+          - mysql -h 127.0.0.1 -p 3306 -uroot -e "drop database if exists bd2_grupo0; create database bd2_grupo0;"
           - mvn -B clean install # -B batch mode makes Maven less verbose
         services:
           - mysql
@@ -24,3 +24,5 @@ definitions:
       environment:
         MYSQL_DATABASE: 'bd2_grupo0'
         MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+      
+ 
