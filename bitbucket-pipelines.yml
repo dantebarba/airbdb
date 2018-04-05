@@ -21,3 +21,4 @@ definitions:
       image: mysql
       environment:
         MYSQL_DATABASE: 'bd2_grupo0'
+        MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
