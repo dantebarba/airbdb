@@ -11,8 +11,8 @@ pipelines:
         caches:
           - maven
         script: # Modify the commands below to build your repository.
-          - chmod +x createDatabase.sh
-          - bash createDatabase.sh
+          - service mysql start
+          - mysql -uroot -e "drop database if exists bd2_grupo0; create database bd2_grupo0;"
           - mvn -B clean install # -B batch mode makes Maven less verbose
         services:
           - mysql
