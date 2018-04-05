@@ -12,7 +12,8 @@ pipelines:
           - maven
         script: # Modify the commands below to build your repository.
           - apt-get update && apt-get install -y unzip mysql-client          
-          - mysql -h 127.0.0.1 -uroot -e "drop database if exists bd2_grupo0; create database bd2_grupo0;"
+          - chmod +x createDatabase.sh
+          - bash createDatabase.sh
           - mvn -B clean install # -B batch mode makes Maven less verbose
         services:
           - mysql
