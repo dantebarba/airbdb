@@ -2,7 +2,7 @@ package ar.edu.unlp.info.bd2.model;
 
 public class ReservationRating {
 	private Long id;
-	private Integer points;
+	private int points;
 	private String comment;
 
 	public Long getId() {
@@ -13,11 +13,11 @@ public class ReservationRating {
 		this.id = id;
 	}
 
-	public Integer getPoints() {
+	public int getPoints() {
 		return points;
 	}
 
-	public void setPoints(Integer points) {
+	public void setPoints(int points) {
 		this.points = points;
 	}
 
