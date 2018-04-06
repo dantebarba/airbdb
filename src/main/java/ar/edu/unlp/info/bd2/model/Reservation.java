@@ -1,9 +1,13 @@
 package ar.edu.unlp.info.bd2.model;
 
+import java.util.Date;
+
 public class Reservation {
 
 	private Long id;
 	private Float price;
+	private Date from;
+	private Date to;
 	private ReservationStatus status;
 	private Property property;
 	private User user;
@@ -46,6 +50,22 @@ public class Reservation {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public Date getFrom() {
+		return from;
+	}
+
+	public void setFrom(Date from) {
+		this.from = from;
+	}
+
+	public Date getTo() {
+		return to;
+	}
+
+	public void setTo(Date to) {
+		this.to = to;
 	}
 	
 }

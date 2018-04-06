@@ -1,24 +1,15 @@
 package ar.edu.unlp.info.bd2.model;
 
 public class Apartment extends Property {
+	
+	private int rooms;
 
-	private Long id;
-	private Float price;
-
-	public Float getPrice() {
-		return price;
+	public int getRooms() {
+		return rooms;
 	}
 
-	public void setPrice(Float price) {
-		this.price = price;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
+	public void setRooms(int numberOfRooms) {
+		this.rooms = numberOfRooms;
 	}
 	
 }
