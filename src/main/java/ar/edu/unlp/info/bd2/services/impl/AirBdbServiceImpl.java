@@ -10,9 +10,16 @@ import ar.edu.unlp.info.bd2.model.Property;
 import ar.edu.unlp.info.bd2.model.Reservation;
 import ar.edu.unlp.info.bd2.model.ReservationRating;
 import ar.edu.unlp.info.bd2.model.User;
+import ar.edu.unlp.info.bd2.repositories.AirBdbRepository;
 import ar.edu.unlp.info.bd2.services.AirBdbService;
 
 public class AirBdbServiceImpl implements AirBdbService {
+
+	AirBdbRepository repository = null;
+	
+	public AirBdbServiceImpl(AirBdbRepository repository) {
+		this.repository = repository;
+	}
 
 	@Override
 	public boolean isPropertyAvailable(Long id, Date from, Date to) {
