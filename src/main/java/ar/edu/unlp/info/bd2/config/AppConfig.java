@@ -2,7 +2,7 @@ package ar.edu.unlp.info.bd2.config;
 
 import ar.edu.unlp.info.bd2.repositories.AirBdbRepository;
 import ar.edu.unlp.info.bd2.services.AirBdbService;
-import ar.edu.unlp.info.bd2.services.AirBdbServiceImpl;
+import ar.edu.unlp.info.bd2.services.impl.AirBdbServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
