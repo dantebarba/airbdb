@@ -6,17 +6,18 @@
 image: maven:3.3.9
 
 pipelines:
-  default:
-    - step:
-        caches:
-          - maven
-        script: # Modify the commands below to build your repository.
-          - apt-get update && apt-get install -y unzip mysql-client          
-          - chmod +x createDatabase.sh
-          - bash createDatabase.sh
-          - mvn -B clean install # -B batch mode makes Maven less verbose
-        services:
-          - mysql
+  branches:
+    master:
+      - step:
+          caches:
+            - maven
+          script: # Modify the commands below to build your repository.
+            - apt-get update && apt-get install -y unzip mysql-client          
+            - chmod +x createDatabase.sh
+            - bash createDatabase.sh
+            - mvn -B clean install # -B batch mode makes Maven less verbose
+          services:
+            - mysql
         
 definitions:
   services:
