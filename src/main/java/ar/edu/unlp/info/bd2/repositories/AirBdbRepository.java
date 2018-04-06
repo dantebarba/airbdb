@@ -13,7 +13,7 @@ public class AirBdbRepository {
   private SessionFactory sessionFactory;
   
   public Object find(Serializable id, Class<?> clazz) {
-	  EntityManager entityManager = sessionFactory.createEntityManager();
+	  EntityManager entityManager = sessionFactory.getCurrentSession();
 	  return entityManager.find(clazz, id);
   }
 
