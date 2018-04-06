@@ -1,10 +1,15 @@
 package ar.edu.unlp.info.bd2.services;
 
-import ar.edu.unlp.info.bd2.model.*;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Date;
-import java.util.List;
+
+import ar.edu.unlp.info.bd2.exceptions.RateException;
+import ar.edu.unlp.info.bd2.exceptions.ReservationException;
+import ar.edu.unlp.info.bd2.model.Apartment;
+import ar.edu.unlp.info.bd2.model.PrivateRoom;
+import ar.edu.unlp.info.bd2.model.Property;
+import ar.edu.unlp.info.bd2.model.Reservation;
+import ar.edu.unlp.info.bd2.model.ReservationRating;
+import ar.edu.unlp.info.bd2.model.User;
 
 public interface AirBdbService {
 
