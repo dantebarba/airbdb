@@ -2,6 +2,8 @@ package ar.edu.unlp.info.bd2.services.impl;
 
 import java.util.Date;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import ar.edu.unlp.info.bd2.exceptions.RateException;
 import ar.edu.unlp.info.bd2.exceptions.ReservationException;
 import ar.edu.unlp.info.bd2.model.Apartment;
@@ -22,81 +24,80 @@ public class AirBdbServiceImpl implements AirBdbService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public boolean isPropertyAvailable(Long id, Date from, Date to) {
 		return false;
 	}
 
 	@Override
+	@Transactional
 	public void cancelReservation(Long reservationId) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void finishReservation(Long id) {
-		// TODO Auto-generated method stub
-
+	@Transactional
+	public void finishReservation(Long id) {		
 	}
 
 	@Override
 	public User createUser(String username, String name) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
+	@Transactional
 	public User getUserByUsername(String email) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
+	@Transactional
 	public Apartment createAparment(String name, String description, double price, int capacity, int rooms,
 			String cityName) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
+	@Transactional
 	public PrivateRoom createRoom(String name, String description, double price, int capacity, int beds,
 			String cityName) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
+	@Transactional
 	public Property getPropertyByName(String name) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
+	@Transactional
 	public Reservation createReservation(long propertyId, long userId, Date from, Date to) throws ReservationException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
+	@Transactional
 	public User getUserById(Long id) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
+	@Transactional
 	public void rateReservation(Long reservationId, int points, String comment) throws RateException {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
+	@Transactional
 	public ReservationRating getRatingForReservation(Long reservationId) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Reservation getReservationById(Long id) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
