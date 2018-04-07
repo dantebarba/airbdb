@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import ar.edu.unlp.info.bd2.model.Property;
 import ar.edu.unlp.info.bd2.model.Reservation;
+import ar.edu.unlp.info.bd2.model.ReservationStatus;
 import ar.edu.unlp.info.bd2.model.User;
 
 /**
@@ -49,8 +50,9 @@ public class AirBdbRepository {
 	public List<Reservation> getReservationsBetweenDates(Long id, Date from, Date to) {
 		return this.sessionFactory.getCurrentSession()
 				.createQuery(
-						"from Reservation reservation where reservation.property.id = :id and ((reservation.from >= :from and reservation.from < :to) or (reservation.to <= :to and reservation.to > :from))")
-				.setParameter("to", to).setParameter("from", from).setParameter("id", id).getResultList();
+						"from Reservation reservation where reservation.property.id = :id and reservation.status != :status and ((reservation.from >= :from and reservation.from < :to) or (reservation.to <= :to and reservation.to > :from))")
+				.setParameter("to", to).setParameter("from", from).setParameter("id", id)
+				.setParameter("status", ReservationStatus.CANCELED).getResultList();
 	}
 
 }
