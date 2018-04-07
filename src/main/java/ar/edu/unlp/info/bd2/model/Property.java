@@ -18,6 +18,7 @@ public abstract class Property {
 	private double price;
 	private String cityName;
 	private int capacity;
+	private String description;
 
 	public String getName() {
 		return name;
@@ -57,6 +58,22 @@ public abstract class Property {
 
 	public void setCapacity(int capacity) {
 		this.capacity = capacity;
+	}
+
+	public void create(String name2, String description, double price2, int capacity2, String cityName2) {
+		this.name = name2;
+		this.setDescription(description);
+		this.price = price2;
+		this.capacity = capacity2;
+		this.cityName = cityName2;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }

@@ -49,7 +49,7 @@ public class AirBdbServiceImpl implements AirBdbService {
 		Assert.hasLength(username, "Se debe ingresar un usuario.");
 		Assert.hasLength(name, "Se debe ingresar un nombre.");
 		Assert.isNull(this.getUserByUsername(username), "Ya existe un usuario con username " + username);
-		
+
 		return (User) repository.persist(User.create(username, name));
 	}
 
@@ -65,20 +65,35 @@ public class AirBdbServiceImpl implements AirBdbService {
 	@Transactional
 	public Apartment createAparment(String name, String description, double price, int capacity, int rooms,
 			String cityName) {
-		return null;
+		this.propertyValidation(name, capacity, cityName);
+		Assert.isTrue(rooms > 0, "Debe tener al menos una habitación.");
+
+		return (Apartment) repository.persist(Apartment.create(name, description, price, capacity, rooms, cityName));
 	}
 
 	@Override
 	@Transactional
 	public PrivateRoom createRoom(String name, String description, double price, int capacity, int beds,
 			String cityName) {
-		return null;
+		propertyValidation(name, capacity, cityName);
+		Assert.isTrue(beds > 0, "Debe tener al menos una habitación.");
+
+		return (PrivateRoom) repository.persist(PrivateRoom.create(name, description, price, capacity, beds, cityName));
+	}
+
+	private void propertyValidation(String name, int capacity, String cityName) {
+		Assert.hasText(name, "El nombre no puede estar vacio");
+		Assert.hasText(cityName, "Se debe ingresar la ciudad");
+		Assert.isTrue(capacity > 0, "Debe poder ser ocupada.");
+		Assert.isNull(this.getPropertyByName(name), "La propiedad ya existe");
 	}
 
 	@Override
 	@Transactional
 	public Property getPropertyByName(String name) {
-		return null;
+		Assert.hasText(name, "El nombre ingresado no es válido");
+		List<Property> result = this.repository.getPropertyByName(name);
+		return !result.isEmpty() ? result.get(0) : null;
 	}
 
 	@Override
@@ -88,9 +103,9 @@ public class AirBdbServiceImpl implements AirBdbService {
 	}
 
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public User getUserById(Long id) {
-		return null;
+		return (User) this.repository.find(id, User.class);
 	}
 
 	@Override
@@ -100,7 +115,7 @@ public class AirBdbServiceImpl implements AirBdbService {
 	}
 
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public ReservationRating getRatingForReservation(Long reservationId) {
 		return null;
 	}

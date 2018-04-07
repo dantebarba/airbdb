@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import ar.edu.unlp.info.bd2.model.Property;
 import ar.edu.unlp.info.bd2.model.User;
 
 /**
@@ -34,6 +35,11 @@ public class AirBdbRepository {
 	public Object persist(Object obj) {
 		this.sessionFactory.getCurrentSession().persist(obj);
 		return obj;
+	}
+
+	public List<Property> getPropertyByName(String name) {
+		return (List<Property>) sessionFactory.getCurrentSession().createQuery("from Property where name = :name").setParameter("name", name)
+				.getResultList();
 	}
 
 }

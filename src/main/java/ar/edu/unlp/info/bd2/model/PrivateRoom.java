@@ -15,4 +15,15 @@ public class PrivateRoom extends Property {
 		this.beds = beds;
 	}
 	
+	public static PrivateRoom create(String name, String description, double price, int capacity, int beds,
+			String cityName) {
+		return new PrivateRoom().create(name, description, price, capacity, cityName, beds);
+	}
+
+	private PrivateRoom create(String name, String description, double price, int capacity, String cityName, int beds) {
+		super.create(name, description, price, capacity, cityName);
+		this.beds = beds;
+		return this;
+	}
+	
 }
