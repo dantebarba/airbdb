@@ -141,8 +141,11 @@ public class AirBdbServiceImpl implements AirBdbService {
 	@Override
 	@Transactional(readOnly = true)
 	public ReservationRating getRatingForReservation(Long reservationId) {
-		return null;
+		Reservation reservation = (Reservation) this.repository.find(reservationId,Reservation.class);
+		Assert.notNull(reservation,"La reserva ingresada no se encuentra");
+		return reservation.getRating();
 	}
+
 
 	@Override
 	@Transactional(readOnly = true)
