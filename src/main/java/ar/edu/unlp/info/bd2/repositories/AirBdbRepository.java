@@ -10,7 +10,6 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import ar.edu.unlp.info.bd2.model.Property;
-import ar.edu.unlp.info.bd2.model.Reservation;
 import ar.edu.unlp.info.bd2.model.User;
 
 /**
@@ -46,7 +45,7 @@ public class AirBdbRepository {
 				.setParameter("name", name).getResultList();
 	}
 
-	public List<Reservation> getReservationsBetweenDates(Long id, Date from, Date to) {
+	public List getReservationsBetweenDates(Long id, Date from, Date to) {
 		return this.sessionFactory.getCurrentSession()
 				.createQuery(
 						"from Reservation reservation where reservation.property.id = :id and ((reservation.from >= :from and reservation.from < :to) or (reservation.to <= :to and reservation.to > :from))")

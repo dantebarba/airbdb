@@ -3,17 +3,12 @@ package ar.edu.unlp.info.bd2.services.impl;
 import java.util.Date;
 import java.util.List;
 
+import ar.edu.unlp.info.bd2.model.*;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import ar.edu.unlp.info.bd2.exceptions.RateException;
 import ar.edu.unlp.info.bd2.exceptions.ReservationException;
-import ar.edu.unlp.info.bd2.model.Apartment;
-import ar.edu.unlp.info.bd2.model.PrivateRoom;
-import ar.edu.unlp.info.bd2.model.Property;
-import ar.edu.unlp.info.bd2.model.Reservation;
-import ar.edu.unlp.info.bd2.model.ReservationRating;
-import ar.edu.unlp.info.bd2.model.User;
 import ar.edu.unlp.info.bd2.repositories.AirBdbRepository;
 import ar.edu.unlp.info.bd2.services.AirBdbService;
 
@@ -34,12 +29,18 @@ public class AirBdbServiceImpl implements AirBdbService {
 	@Override
 	@Transactional
 	public void cancelReservation(Long reservationId) {
+		Reservation reservation = (Reservation) this.repository.find(reservationId,Reservation.class);
+		Assert.notNull(reservation,"La reserva ingresada no se encuentra");
+		reservation.setStatus(ReservationStatus.CANCELED);
 
 	}
 
 	@Override
 	@Transactional
-	public void finishReservation(Long id) {
+	public void finishReservation(Long reservationId) {
+		Reservation reservation = (Reservation) this.repository.find(reservationId,Reservation.class);
+		Assert.notNull(reservation,"La reserva ingresada no se encuentra");
+		reservation.setStatus(ReservationStatus.FINISHED);
 	}
 
 	@Override
@@ -63,8 +64,7 @@ public class AirBdbServiceImpl implements AirBdbService {
 
 	@Override
 	@Transactional
-	public Apartment createAparment(String name, String description, double price, int capacity, int rooms,
-			String cityName) {
+	public Apartment createAparment(String name, String description, double price, int capacity, int rooms, String cityName) {
 		this.propertyValidation(name, capacity, cityName);
 		Assert.isTrue(rooms > 0, "Debe tener al menos una habitación.");
 
