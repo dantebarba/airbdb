@@ -49,7 +49,7 @@ public class AirBdbRepository {
 	public List<Reservation> getReservationsBetweenDates(Long id, Date from, Date to) {
 		return this.sessionFactory.getCurrentSession()
 				.createQuery(
-						"from Reservation where property.id = :id and ((from >= :from and from < :to) or (to <= :to and to > :from)")
+						"from Reservation reservation where reservation.property.id = :id and ((reservation.from >= :from and reservation.from < :to) or (reservation.to <= :to and reservation.to > :from))")
 				.setParameter("to", to).setParameter("from", from).setParameter("id", id).getResultList();
 	}
 
