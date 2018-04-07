@@ -9,7 +9,7 @@ import javax.persistence.InheritanceType;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public abstract class Property {
+public abstract class Property implements Persistable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
