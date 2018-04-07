@@ -28,7 +28,7 @@ public class AirBdbServiceImpl implements AirBdbService {
 	@Override
 	@Transactional(readOnly = true)
 	public boolean isPropertyAvailable(Long id, Date from, Date to) {
-		return false;
+		return this.repository.getReservationsBetweenDates(id, from, to).isEmpty();
 	}
 
 	@Override
@@ -112,14 +112,10 @@ public class AirBdbServiceImpl implements AirBdbService {
 		User user = (User) this.repository.find(userId, User.class);
 		Assert.notNull(user, "No se ha encontrado el usuario con id " + userId);		
 		
-		if (!this.checkReservations(property, from, to))
+		if (!this.isPropertyAvailable(property.getId(), from, to))
 			throw new ReservationException();
 		
 		return (Reservation) this.repository.persist(new Reservation().create(property, user, from, to));
-	}
-
-	private boolean checkReservations(Property property, Date from, Date to) {
-		return this.repository.getReservationsBetweenDates(property.getId(), from, to).isEmpty();
 	}
 
 	@Override
