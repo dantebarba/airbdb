@@ -127,7 +127,15 @@ public class AirBdbServiceImpl implements AirBdbService {
 	@Override
 	@Transactional
 	public void rateReservation(Long reservationId, int points, String comment) throws RateException {
-
+		Reservation reservation = (Reservation) this.repository.find(reservationId,Reservation.class);
+		Assert.notNull(reservation,"La reserva ingresada no se encuentra");
+		if(!reservation.isFinished()){
+			throw new RateException();
+		}
+		ReservationRating rating = new ReservationRating();
+		rating.setPoints(points);
+		rating.setComment(comment);
+		reservation.setRating(rating);
 	}
 
 	@Override

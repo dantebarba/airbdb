@@ -44,6 +44,8 @@ public class Reservation {
 	@JoinColumn
 	private User user;
 
+	private ReservationRating rating;
+
 	public double getPrice() {
 		return price;
 	}
@@ -121,4 +123,15 @@ public class Reservation {
 						.getDays() * this.getProperty().getPrice());
 	}
 
+	public boolean isFinished() {
+		return this.getStatus().equals(ReservationStatus.FINISHED);
+	}
+
+	public ReservationRating getRating() {
+		return rating;
+	}
+
+	public void setRating(ReservationRating rating) {
+		this.rating = rating;
+	}
 }
