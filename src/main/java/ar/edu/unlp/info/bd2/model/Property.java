@@ -1,13 +1,25 @@
 package ar.edu.unlp.info.bd2.model;
 
-public class Property {
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+public abstract class Property implements Persistable {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String name;
 	private double price;
 	private String cityName;
 	private int capacity;
-	
+	private String description;
+
 	public String getName() {
 		return name;
 	}
@@ -47,5 +59,21 @@ public class Property {
 	public void setCapacity(int capacity) {
 		this.capacity = capacity;
 	}
-	
+
+	public void create(String name2, String description, double price2, int capacity2, String cityName2) {
+		this.name = name2;
+		this.setDescription(description);
+		this.price = price2;
+		this.capacity = capacity2;
+		this.cityName = cityName2;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 }

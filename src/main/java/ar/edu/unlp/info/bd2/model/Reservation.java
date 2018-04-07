@@ -2,21 +2,59 @@ package ar.edu.unlp.info.bd2.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+
+import ar.edu.unlp.info.bd2.exceptions.RateException;
+
+@Entity
 public class Reservation {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	private Float price;
+	private double price;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "date_from")
 	private Date from;
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "date_to")
 	private Date to;
-	private ReservationStatus status;
+
+	@Enumerated(EnumType.STRING)
+	private ReservationStatus status = ReservationStatus.PENDING;
+
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinColumn
 	private Property property;
+
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinColumn
 	private User user;
 
-	public Float getPrice() {
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinColumn
+	private ReservationRating rating;
+
+	public double getPrice() {
 		return price;
 	}
 
-	public void setPrice(Float price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 
@@ -67,5 +105,44 @@ public class Reservation {
 	public void setTo(Date to) {
 		this.to = to;
 	}
-	
+
+	public Reservation create(Property property2, User user2, Date from2, Date to2) {
+		this.from = from2;
+		this.to = to2;
+		this.property = property2;
+		this.user = user2;
+		this.calculatePrice();
+		this.addReservationToUser();
+		return this;
+
+	}
+
+	private void addReservationToUser() {
+		this.getUser().getReservations().add(this);
+	}
+
+	private void calculatePrice() {
+		this.setPrice(
+				Days.daysBetween(new DateTime(from).withTimeAtStartOfDay(), new DateTime(to).withTimeAtStartOfDay())
+						.getDays() * this.getProperty().getPrice());
+	}
+
+	public boolean isFinished() {
+		return this.getStatus().equals(ReservationStatus.FINISHED);
+	}
+
+	public ReservationRating getRating() {
+		return rating;
+	}
+
+	public void setRating(ReservationRating rating) {
+		this.rating = rating;
+	}
+
+	public void rate(int points, String comment) throws RateException {
+		if (!isFinished()) {
+			throw new RateException();
+		}
+		this.setRating(new ReservationRating().create(points, comment));
+	}
 }

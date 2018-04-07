@@ -1,16 +1,16 @@
 package ar.edu.unlp.info.bd2.config;
 
+import java.util.Properties;
+
+import javax.sql.DataSource;
+
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import javax.sql.DataSource;
-import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
@@ -31,10 +31,9 @@ public class HibernateConfiguration {
   public DataSource dataSource() {
     BasicDataSource dataSource = new BasicDataSource();
     dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-    dataSource.setUrl("jdbc:mysql://localhost:3306/bd2_grupo" + this.getGroupNumber());
+    dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/bd2_grupo" + this.getGroupNumber());
     dataSource.setUsername("root");
     dataSource.setPassword("");
-
     return dataSource;
   }
 
