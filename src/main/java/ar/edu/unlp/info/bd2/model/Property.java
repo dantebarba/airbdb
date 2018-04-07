@@ -1,13 +1,24 @@
 package ar.edu.unlp.info.bd2.model;
 
-public class Property {
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+public abstract class Property {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String name;
 	private double price;
 	private String cityName;
 	private int capacity;
-	
+
 	public String getName() {
 		return name;
 	}
@@ -47,5 +58,5 @@ public class Property {
 	public void setCapacity(int capacity) {
 		this.capacity = capacity;
 	}
-	
+
 }

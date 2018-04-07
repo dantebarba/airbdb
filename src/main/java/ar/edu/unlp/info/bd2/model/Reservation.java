@@ -2,14 +2,39 @@ package ar.edu.unlp.info.bd2.model;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
 public class Reservation {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private Float price;
+	
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date from;
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date to;
+	
+	@Enumerated(EnumType.STRING)
 	private ReservationStatus status;
+	
+	@ManyToOne
+	@JoinColumn
 	private Property property;
+	
+	@ManyToOne
+	@JoinColumn
 	private User user;
 
 	public Float getPrice() {
@@ -67,5 +92,5 @@ public class Reservation {
 	public void setTo(Date to) {
 		this.to = to;
 	}
-	
+
 }

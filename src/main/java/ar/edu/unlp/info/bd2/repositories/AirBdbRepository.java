@@ -7,6 +7,12 @@ import javax.persistence.EntityManager;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * Los mapeos se realizaron utilizando los valores por defecto de Hibernate.
+ *
+ * @author dantebarba
+ *
+ */
 public class AirBdbRepository {
 
   @Autowired
