@@ -38,8 +38,8 @@ public class ReservationRating {
 	}
 
 	public ReservationRating create(int points2, String comment2) {
-		this.setPoints(points);
-		this.setComment(comment);
+		this.setPoints(points2);
+		this.setComment(comment2);
 		return this;
 	}
 }
