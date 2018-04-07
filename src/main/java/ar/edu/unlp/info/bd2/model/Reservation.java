@@ -18,6 +18,8 @@ import javax.persistence.TemporalType;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 
+import ar.edu.unlp.info.bd2.exceptions.RateException;
+
 @Entity
 public class Reservation {
 
@@ -25,25 +27,27 @@ public class Reservation {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private double price;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "date_from")
 	private Date from;
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "date_to")
 	private Date to;
-	
+
 	@Enumerated(EnumType.STRING)
 	private ReservationStatus status = ReservationStatus.PENDING;
-	
+
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinColumn
 	private Property property;
-	
+
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinColumn
 	private User user;
 
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinColumn
 	private ReservationRating rating;
 
 	public double getPrice() {
@@ -110,9 +114,9 @@ public class Reservation {
 		this.calculatePrice();
 		this.addReservationToUser();
 		return this;
-		
+
 	}
-	
+
 	private void addReservationToUser() {
 		this.getUser().getReservations().add(this);
 	}
@@ -133,5 +137,12 @@ public class Reservation {
 
 	public void setRating(ReservationRating rating) {
 		this.rating = rating;
+	}
+
+	public void rate(int points, String comment) throws RateException {
+		if (!isFinished()) {
+			throw new RateException();
+		}
+		this.setRating(new ReservationRating().create(points, comment));
 	}
 }

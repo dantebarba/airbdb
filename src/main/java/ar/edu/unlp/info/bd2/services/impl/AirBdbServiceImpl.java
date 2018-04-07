@@ -29,8 +29,8 @@ public class AirBdbServiceImpl implements AirBdbService {
 	@Override
 	@Transactional
 	public void cancelReservation(Long reservationId) {
-		Reservation reservation = (Reservation) this.repository.find(reservationId,Reservation.class);
-		Assert.notNull(reservation,"La reserva ingresada no se encuentra");
+		Reservation reservation = (Reservation) this.repository.find(reservationId, Reservation.class);
+		Assert.notNull(reservation, "La reserva ingresada no se encuentra");
 		reservation.setStatus(ReservationStatus.CANCELED);
 
 	}
@@ -38,8 +38,8 @@ public class AirBdbServiceImpl implements AirBdbService {
 	@Override
 	@Transactional
 	public void finishReservation(Long reservationId) {
-		Reservation reservation = (Reservation) this.repository.find(reservationId,Reservation.class);
-		Assert.notNull(reservation,"La reserva ingresada no se encuentra");
+		Reservation reservation = (Reservation) this.repository.find(reservationId, Reservation.class);
+		Assert.notNull(reservation, "La reserva ingresada no se encuentra");
 		reservation.setStatus(ReservationStatus.FINISHED);
 	}
 
@@ -64,7 +64,8 @@ public class AirBdbServiceImpl implements AirBdbService {
 
 	@Override
 	@Transactional
-	public Apartment createAparment(String name, String description, double price, int capacity, int rooms, String cityName) {
+	public Apartment createAparment(String name, String description, double price, int capacity, int rooms,
+			String cityName) {
 		this.propertyValidation(name, capacity, cityName);
 		Assert.isTrue(rooms > 0, "Debe tener al menos una habitación.");
 
@@ -110,11 +111,11 @@ public class AirBdbServiceImpl implements AirBdbService {
 		Property property = (Property) this.repository.find(propertyId, Property.class);
 		Assert.notNull(property, "No se ha encontrado la propiedad con id " + propertyId);
 		User user = (User) this.repository.find(userId, User.class);
-		Assert.notNull(user, "No se ha encontrado el usuario con id " + userId);		
-		
+		Assert.notNull(user, "No se ha encontrado el usuario con id " + userId);
+
 		if (!this.isPropertyAvailable(property.getId(), from, to))
 			throw new ReservationException();
-		
+
 		return (Reservation) this.repository.persist(new Reservation().create(property, user, from, to));
 	}
 
@@ -127,15 +128,13 @@ public class AirBdbServiceImpl implements AirBdbService {
 	@Override
 	@Transactional
 	public void rateReservation(Long reservationId, int points, String comment) throws RateException {
-		Reservation reservation = (Reservation) this.repository.find(reservationId,Reservation.class);
-		Assert.notNull(reservation,"La reserva ingresada no se encuentra");
-		if(!reservation.isFinished()){
-			throw new RateException();
-		}
-		ReservationRating rating = new ReservationRating();
-		rating.setPoints(points);
-		rating.setComment(comment);
-		reservation.setRating(rating);
+		Reservation reservation = (Reservation) this.repository.find(reservationId, Reservation.class);
+		Assert.notNull(reservation, "La reserva ingresada no se encuentra");
+		
+		Assert.isTrue(points > 0, "El puntaje debe ser mayor a 0.");
+		Assert.isTrue(points <= 5, "El puntaje debe ser menor o igual a 5.");		
+		
+		reservation.rate(points, comment);
 	}
 
 	@Override
@@ -147,9 +146,9 @@ public class AirBdbServiceImpl implements AirBdbService {
 	@Override
 	@Transactional(readOnly = true)
 	public Reservation getReservationById(Long id) {
-		
+
 		Assert.notNull(id, "Se debe ingresar una id valida");
-		
+
 		return (Reservation) repository.find(id, Reservation.class);
 	}
 

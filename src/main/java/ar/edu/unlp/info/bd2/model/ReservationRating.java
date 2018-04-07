@@ -36,4 +36,10 @@ public class ReservationRating {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
+
+	public ReservationRating create(int points2, String comment2) {
+		this.setPoints(points);
+		this.setComment(comment);
+		return this;
+	}
 }
