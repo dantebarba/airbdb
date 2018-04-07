@@ -34,7 +34,7 @@ public class Reservation {
 	private Date to;
 	
 	@Enumerated(EnumType.STRING)
-	private ReservationStatus status;
+	private ReservationStatus status = ReservationStatus.PENDING;
 	
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinColumn
