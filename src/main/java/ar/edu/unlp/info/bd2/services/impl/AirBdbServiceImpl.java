@@ -68,7 +68,8 @@ public class AirBdbServiceImpl implements AirBdbService {
 		this.propertyValidation(name, capacity, cityName);
 		Assert.isTrue(rooms > 0, "Debe tener al menos una habitación.");
 
-		return (Apartment) repository.persist(Apartment.create(name, description, price, capacity, rooms, cityName));
+		return (Apartment) repository
+				.persist(new Apartment().create(name, description, price, capacity, rooms, cityName));
 	}
 
 	@Override
@@ -78,7 +79,8 @@ public class AirBdbServiceImpl implements AirBdbService {
 		propertyValidation(name, capacity, cityName);
 		Assert.isTrue(beds > 0, "Debe tener al menos una habitación.");
 
-		return (PrivateRoom) repository.persist(PrivateRoom.create(name, description, price, capacity, beds, cityName));
+		return (PrivateRoom) repository
+				.persist(new PrivateRoom().create(name, description, price, capacity, beds, cityName));
 	}
 
 	private void propertyValidation(String name, int capacity, String cityName) {
@@ -99,7 +101,25 @@ public class AirBdbServiceImpl implements AirBdbService {
 	@Override
 	@Transactional
 	public Reservation createReservation(long propertyId, long userId, Date from, Date to) throws ReservationException {
-		return null;
+
+		Assert.isTrue(propertyId != 0, "Se debe ingresar una propiedad");
+		Assert.isTrue(userId != 0, "Se debe ingresar un usuario");
+		Assert.notNull(from, "Se debe ingresar una fecha desde");
+		Assert.notNull(to, "Se debe ingresar una fecha hasta");
+
+		Property property = (Property) this.repository.find(propertyId, Property.class);
+		Assert.notNull(property, "No se ha encontrado la propiedad con id " + propertyId);
+		User user = (User) this.repository.find(userId, User.class);
+		Assert.notNull(user, "No se ha encontrado el usuario con id " + userId);		
+		
+		if (!this.checkReservations(property, from, to))
+			throw new ReservationException();
+		
+		return (Reservation) this.repository.persist(new Reservation().create(property, user, from, to));
+	}
+
+	private boolean checkReservations(Property property, Date from, Date to) {
+		return this.repository.getReservationsBetweenDates(property.getId(), from, to).isEmpty();
 	}
 
 	@Override
@@ -123,7 +143,10 @@ public class AirBdbServiceImpl implements AirBdbService {
 	@Override
 	@Transactional(readOnly = true)
 	public Reservation getReservationById(Long id) {
-		return null;
+		
+		Assert.notNull(id, "Se debe ingresar una id valida");
+		
+		return (Reservation) repository.find(id, Reservation.class);
 	}
 
 }

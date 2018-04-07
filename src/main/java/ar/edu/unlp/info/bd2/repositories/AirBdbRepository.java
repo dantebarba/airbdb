@@ -1,6 +1,7 @@
 package ar.edu.unlp.info.bd2.repositories;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -9,6 +10,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import ar.edu.unlp.info.bd2.model.Property;
+import ar.edu.unlp.info.bd2.model.Reservation;
 import ar.edu.unlp.info.bd2.model.User;
 
 /**
@@ -27,9 +29,10 @@ public class AirBdbRepository {
 		return entityManager.find(clazz, id);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<User> getUserByEmail(String email) {
-		return (List<User>) sessionFactory.getCurrentSession().createQuery("from User where username = :email").setParameter("email", email)
-				.getResultList();
+		return (List<User>) sessionFactory.getCurrentSession().createQuery("from User where username = :email")
+				.setParameter("email", email).getResultList();
 	}
 
 	public Object persist(Object obj) {
@@ -37,9 +40,17 @@ public class AirBdbRepository {
 		return obj;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Property> getPropertyByName(String name) {
-		return (List<Property>) sessionFactory.getCurrentSession().createQuery("from Property where name = :name").setParameter("name", name)
-				.getResultList();
+		return (List<Property>) sessionFactory.getCurrentSession().createQuery("from Property where name = :name")
+				.setParameter("name", name).getResultList();
+	}
+
+	public List<Reservation> getReservationsBetweenDates(Long id, Date from, Date to) {
+		return this.sessionFactory.getCurrentSession()
+				.createQuery(
+						"from Reservation reservation where reservation.property.id = :id and ((reservation.from >= :from and reservation.from < :to) or (reservation.to <= :to and reservation.to > :from))")
+				.setParameter("to", to).setParameter("from", from).setParameter("id", id).getResultList();
 	}
 
 }
