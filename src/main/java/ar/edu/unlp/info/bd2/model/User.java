@@ -19,7 +19,7 @@ public class User {
 	private String username;
 	private String name;
 
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	private Set<Reservation> reservations = new HashSet<Reservation>();
 	
 	/**
