@@ -1,8 +1,10 @@
 package ar.edu.unlp.info.bd2.services.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import ar.edu.unlp.info.bd2.exceptions.RateException;
 import ar.edu.unlp.info.bd2.exceptions.ReservationException;
@@ -18,7 +20,7 @@ import ar.edu.unlp.info.bd2.services.AirBdbService;
 public class AirBdbServiceImpl implements AirBdbService {
 
 	AirBdbRepository repository = null;
-	
+
 	public AirBdbServiceImpl(AirBdbRepository repository) {
 		this.repository = repository;
 	}
@@ -37,18 +39,26 @@ public class AirBdbServiceImpl implements AirBdbService {
 
 	@Override
 	@Transactional
-	public void finishReservation(Long id) {		
-	}
-
-	@Override
-	public User createUser(String username, String name) {
-		return null;
+	public void finishReservation(Long id) {
 	}
 
 	@Override
 	@Transactional
+	public User createUser(String username, String name) {
+
+		Assert.hasLength(username, "Se debe ingresar un usuario.");
+		Assert.hasLength(name, "Se debe ingresar un nombre.");
+		Assert.isNull(this.getUserByUsername(username), "Ya existe un usuario con username " + username);
+		
+		return (User) repository.persist(User.create(username, name));
+	}
+
+	@Override
+	@Transactional(readOnly = true)
 	public User getUserByUsername(String email) {
-		return null;
+		Assert.hasText(email, "El email ingresado no es válido");
+		List<User> result = this.repository.getUserByEmail(email);
+		return !result.isEmpty() ? result.get(0) : null;
 	}
 
 	@Override
@@ -86,7 +96,7 @@ public class AirBdbServiceImpl implements AirBdbService {
 	@Override
 	@Transactional
 	public void rateReservation(Long reservationId, int points, String comment) throws RateException {
-		
+
 	}
 
 	@Override

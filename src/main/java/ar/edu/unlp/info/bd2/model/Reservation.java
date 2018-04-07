@@ -2,6 +2,7 @@ package ar.edu.unlp.info.bd2.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -22,8 +23,10 @@ public class Reservation {
 	private Float price;
 	
 	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "date_from")
 	private Date from;
 	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "date_to")
 	private Date to;
 	
 	@Enumerated(EnumType.STRING)

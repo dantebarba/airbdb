@@ -17,6 +17,7 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String username;
+	private String name;
 
 	@OneToMany(mappedBy = "user")
 	private Set<Reservation> reservations = new HashSet<Reservation>();
@@ -49,6 +50,21 @@ public class User {
 
 	public Set<Property> getProperties() {
 		return properties;
+	}
+
+	public static User create(String username2, String name) {
+		User temp = new User();
+		temp.setUsername(username2);
+		temp.setName(name);
+		return temp;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }
