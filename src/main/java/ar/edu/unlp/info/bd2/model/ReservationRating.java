@@ -6,7 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class ReservationRating {
+public class ReservationRating implements Persistable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;

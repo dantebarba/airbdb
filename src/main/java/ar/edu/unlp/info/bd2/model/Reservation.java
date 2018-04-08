@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -21,7 +22,7 @@ import org.joda.time.Days;
 import ar.edu.unlp.info.bd2.exceptions.RateException;
 
 @Entity
-public class Reservation {
+public class Reservation implements Persistable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -46,7 +47,7 @@ public class Reservation {
 	@JoinColumn
 	private User user;
 
-	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinColumn
 	private ReservationRating rating;
 

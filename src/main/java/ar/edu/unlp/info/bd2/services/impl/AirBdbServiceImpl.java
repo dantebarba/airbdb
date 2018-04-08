@@ -30,7 +30,7 @@ public class AirBdbServiceImpl implements AirBdbService {
 	@Transactional
 	public void cancelReservation(Long reservationId) {
 		
-		Assert.isTrue(reservationId > 0, "Debe ingresar un numero de reserva");
+		Assert.notNull(reservationId, "Debe ingresar un numero de reserva");
 		
 		Reservation reservation = (Reservation) this.repository.find(reservationId, Reservation.class);
 		Assert.notNull(reservation, "La reserva ingresada no se encuentra");
@@ -42,7 +42,7 @@ public class AirBdbServiceImpl implements AirBdbService {
 	@Transactional
 	public void finishReservation(Long reservationId) {
 		
-		Assert.isTrue(reservationId > 0, "Debe ingresar un numero de reserva");
+		Assert.notNull(reservationId, "Debe ingresar un numero de reserva");
 		
 		Reservation reservation = (Reservation) this.repository.find(reservationId, Reservation.class);
 		Assert.notNull(reservation, "La reserva ingresada no se encuentra");
@@ -109,8 +109,8 @@ public class AirBdbServiceImpl implements AirBdbService {
 	@Transactional
 	public Reservation createReservation(long propertyId, long userId, Date from, Date to) throws ReservationException {
 
-		Assert.isTrue(propertyId != 0, "Se debe ingresar una propiedad");
-		Assert.isTrue(userId != 0, "Se debe ingresar un usuario");
+		Assert.isTrue(propertyId > 0, "Se debe ingresar una propiedad");
+		Assert.isTrue(userId > 0, "Se debe ingresar un usuario");
 		Assert.notNull(from, "Se debe ingresar una fecha desde");
 		Assert.notNull(to, "Se debe ingresar una fecha hasta");
 
@@ -138,7 +138,7 @@ public class AirBdbServiceImpl implements AirBdbService {
 	@Transactional
 	public void rateReservation(Long reservationId, int points, String comment) throws RateException {
 		
-		Assert.isTrue(reservationId > 0, "Debe ingresar un numero de reserva");
+		Assert.notNull(reservationId, "Debe ingresar un numero de reserva");
 		
 		Reservation reservation = (Reservation) this.repository.find(reservationId, Reservation.class);
 		Assert.notNull(reservation, "La reserva ingresada no se encuentra");
@@ -153,7 +153,7 @@ public class AirBdbServiceImpl implements AirBdbService {
 	@Transactional(readOnly = true)
 	public ReservationRating getRatingForReservation(Long reservationId) {
 		
-		Assert.isTrue(reservationId > 0, "Debe ingresar un numero de reserva");
+		Assert.notNull(reservationId, "Debe ingresar un numero de reserva");
 
 		Reservation reservation = (Reservation) this.repository.find(reservationId,Reservation.class);
 		Assert.notNull(reservation,"La reserva ingresada no se encuentra");
