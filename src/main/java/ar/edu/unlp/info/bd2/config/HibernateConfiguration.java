@@ -34,6 +34,8 @@ public class HibernateConfiguration {
     dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/bd2_grupo" + this.getGroupNumber());
     dataSource.setUsername("root");
     dataSource.setPassword("");
+     /* DOTO agregar no usar usuario root, usuario y pass en el script de la db somos grupo 23
+      */
     return dataSource;
   }
 
