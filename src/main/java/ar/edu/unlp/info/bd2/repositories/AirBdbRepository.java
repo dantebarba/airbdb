@@ -36,6 +36,33 @@ public class AirBdbRepository {
 				.setParameter("email", email).getResultList();
 	}
 
+	/**
+	 * <b>Why use persist vs save?. </b>
+	 * 
+	 * Para los casos de uso presentados, siempre se persisten Transient
+	 * Objects. Es preferible utilizar persist debido a que no gestiona el
+	 * INSERT inmediatamente, sino que lo hace al cierre de la transacción.
+	 * Además, explicitamente requiere la persistencia de objetos que no esten
+	 * previamente persistidos en la base de datos y obliga a estar en un
+	 * entorno transaccional.
+	 * <p>
+	 * <i>Since save does return the identifier, the INSERT statement has to be
+	 * executed instantly regardless of the state of the transaction (which
+	 * generally is a bad thing). Persist won't execute any statements outside
+	 * of the currently running transaction just to assign the identifier.</i>
+	 * 
+	 * @see <a href=
+	 *      "https://stackoverflow.com/questions/5862680/whats-the-advantage-of-persist-vs-save-in-hibernate"
+	 *      >Stackoverflow</a>
+	 * 
+	 * @see <a href=
+	 *      "https://stackoverflow.com/questions/161224/what-are-the-differences-between-the-different-saving-methods-in-hibernate">Stackoverflow
+	 *      2</a>
+	 * 
+	 * 
+	 * @param obj
+	 * @return the persisted object
+	 */
 	public Object persist(Object obj) {
 		this.sessionFactory.getCurrentSession().persist(obj);
 		return obj;

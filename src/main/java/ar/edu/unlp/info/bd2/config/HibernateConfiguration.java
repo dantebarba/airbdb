@@ -32,8 +32,10 @@ public class HibernateConfiguration {
     BasicDataSource dataSource = new BasicDataSource();
     dataSource.setDriverClassName("com.mysql.jdbc.Driver");
     dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/bd2_grupo" + this.getGroupNumber());
-    dataSource.setUsername("root");
-    dataSource.setPassword("");
+    dataSource.setUsername("grupo_"+this.getGroupNumber());
+    dataSource.setPassword("grupo_"+this.getGroupNumber());
+     /* DOTO agregar no usar usuario root, usuario y pass en el script de la db somos grupo 23
+      */
     return dataSource;
   }
 
@@ -58,6 +60,6 @@ public class HibernateConfiguration {
   }
 
   private Integer getGroupNumber() {
-    return 0;
+    return 23;
   }
 }
