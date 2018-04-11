@@ -26,5 +26,7 @@ definitions:
     mysql:
       image: mysql
       environment:
-        MYSQL_DATABASE: 'bd2_grupo0'
+        MYSQL_DATABASE: 'bd2_grupo23'
         MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+        MYSQL_USER: 'grupo_23'
+        MYSQL_PASSWORD: 'grupo_23'
