@@ -29,18 +29,24 @@ public class AirBdbServiceImpl implements AirBdbService {
 	@Override
 	@Transactional
 	public void cancelReservation(Long reservationId) {
+		
+		Assert.isTrue(reservationId > 0, "Debe ingresar un numero de reserva");
+		
 		Reservation reservation = (Reservation) this.repository.find(reservationId, Reservation.class);
 		Assert.notNull(reservation, "La reserva ingresada no se encuentra");
-		reservation.setStatus(ReservationStatus.CANCELED);
+		reservation.cancel();
 
 	}
 
 	@Override
 	@Transactional
 	public void finishReservation(Long reservationId) {
+		
+		Assert.isTrue(reservationId > 0, "Debe ingresar un numero de reserva");
+		
 		Reservation reservation = (Reservation) this.repository.find(reservationId, Reservation.class);
 		Assert.notNull(reservation, "La reserva ingresada no se encuentra");
-		reservation.setStatus(ReservationStatus.FINISHED);
+		reservation.finish();
 	}
 
 	@Override
@@ -122,12 +128,18 @@ public class AirBdbServiceImpl implements AirBdbService {
 	@Override
 	@Transactional(readOnly = true)
 	public User getUserById(Long id) {
+		
+		Assert.notNull(id, "Debe ingresar un id");
+		
 		return (User) this.repository.find(id, User.class);
 	}
 
 	@Override
 	@Transactional
 	public void rateReservation(Long reservationId, int points, String comment) throws RateException {
+		
+		Assert.isTrue(reservationId > 0, "Debe ingresar un numero de reserva");
+		
 		Reservation reservation = (Reservation) this.repository.find(reservationId, Reservation.class);
 		Assert.notNull(reservation, "La reserva ingresada no se encuentra");
 		
@@ -140,6 +152,9 @@ public class AirBdbServiceImpl implements AirBdbService {
 	@Override
 	@Transactional(readOnly = true)
 	public ReservationRating getRatingForReservation(Long reservationId) {
+		
+		Assert.isTrue(reservationId > 0, "Debe ingresar un numero de reserva");
+
 		Reservation reservation = (Reservation) this.repository.find(reservationId,Reservation.class);
 		Assert.notNull(reservation,"La reserva ingresada no se encuentra");
 		return reservation.getRating();

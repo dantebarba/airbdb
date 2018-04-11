@@ -145,4 +145,18 @@ public class Reservation {
 		}
 		this.setRating(new ReservationRating().create(points, comment));
 	}
+
+	public void finish() {
+		setStatus(ReservationStatus.FINISHED);
+	}
+
+	public void cancel() {
+		if (!this.canBeCanceled())
+			throw new IllegalStateException();
+		setStatus(ReservationStatus.CANCELED);
+	}
+
+	public boolean canBeCanceled() {
+		return !ReservationStatus.FINISHED.equals(this.getStatus());
+	}
 }
