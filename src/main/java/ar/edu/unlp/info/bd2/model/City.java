@@ -1,7 +1,17 @@
 package ar.edu.unlp.info.bd2.model;
 
-public class City {
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
+@Entity
+public class City implements Persistable {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+	
 	private String name;
 
 	public String getName() {
@@ -10,6 +20,11 @@ public class City {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public Long getId() {
+		return id;
 	}
 	
 }
