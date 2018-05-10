@@ -61,7 +61,7 @@ public class AirBdbServiceImpl implements AirBdbStatisticsService {
 
 		Assert.hasLength(username, "Se debe ingresar un usuario.");
 		Assert.hasLength(name, "Se debe ingresar un nombre.");
-		Assert.isNull(this.getUserByUsername(username), "Ya existe un usuario con username " + username);
+//		Assert.isNull(this.getUserByUsername(username), "Ya existe un usuario con username " + username);
 
 		return (User) repository.persist(User.create(username, name));
 	}
@@ -100,7 +100,6 @@ public class AirBdbServiceImpl implements AirBdbStatisticsService {
 		Assert.hasText(name, "El nombre no puede estar vacio");
 		Assert.hasText(cityName, "Se debe ingresar la ciudad");
 		Assert.isTrue(capacity > 0, "Debe poder ser ocupada.");
-		Assert.isNull(this.getPropertyByName(name), "La propiedad ya existe");
 	}
 
 	@Override
@@ -150,7 +149,7 @@ public class AirBdbServiceImpl implements AirBdbStatisticsService {
 		Assert.notNull(reservation, "La reserva ingresada no se encuentra");
 		
 		Assert.isTrue(points > 0, "El puntaje debe ser mayor a 0.");
-		Assert.isTrue(points <= 5, "El puntaje debe ser menor o igual a 5.");		
+//		Assert.isTrue(points <= 5, "El puntaje debe ser menor o igual a 5.");		
 		
 		reservation.rate(points, comment);
 	}

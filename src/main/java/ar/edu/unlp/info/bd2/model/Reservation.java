@@ -47,7 +47,7 @@ public class Reservation implements Persistable {
 	@JoinColumn
 	private User user;
 
-	@OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@OneToOne(cascade = { CascadeType.ALL })
 	@JoinColumn
 	private ReservationRating rating;
 
