@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import ar.edu.unlp.info.bd2.model.City;
 import ar.edu.unlp.info.bd2.model.Property;
 import ar.edu.unlp.info.bd2.model.Reservation;
 import ar.edu.unlp.info.bd2.model.ReservationStatus;
@@ -80,6 +81,12 @@ public class AirBdbRepository {
 						"from Reservation reservation where reservation.property.id = :id and reservation.status != :status and ((reservation.from >= :from and reservation.from < :to) or (reservation.to <= :to and reservation.to > :from))")
 				.setParameter("to", to).setParameter("from", from).setParameter("id", id)
 				.setParameter("status", ReservationStatus.CANCELED).getResultList();
+	}
+
+	public City findCityByName(String cityName) {
+		List<City> cities = (List<City>) this.sessionFactory.getCurrentSession()
+				.createQuery("from City where name = :cityName").setParameter("cityName", cityName).getResultList();
+		return !cities.isEmpty() ? cities.get(0) : null;
 	}
 
 }

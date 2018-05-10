@@ -16,8 +16,8 @@ public class PrivateRoom extends Property {
 	}
 
 	public PrivateRoom create(String name, String description, double price, int capacity, int beds,
-			String cityName) {
-		super.create(name, description, price, capacity, cityName);
+			City city) {
+		super.create(name, description, price, capacity, city);
 		this.beds = beds;
 		return this;
 	}

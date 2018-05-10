@@ -82,7 +82,7 @@ public class AirBdbServiceImpl implements AirBdbStatisticsService {
 		Assert.isTrue(rooms > 0, "Debe tener al menos una habitación.");
 
 		return (Apartment) repository
-				.persist(new Apartment().create(name, description, price, capacity, rooms, cityName));
+				.persist(new Apartment().create(name, description, price, capacity, rooms, this.findOrCreateCity(cityName)));
 	}
 
 	@Override
@@ -91,9 +91,14 @@ public class AirBdbServiceImpl implements AirBdbStatisticsService {
 			String cityName) {
 		propertyValidation(name, capacity, cityName);
 		Assert.isTrue(beds > 0, "Debe tener al menos una habitación.");
-
+		
 		return (PrivateRoom) repository
-				.persist(new PrivateRoom().create(name, description, price, capacity, beds, cityName));
+				.persist(new PrivateRoom().create(name, description, price, capacity, beds, this.findOrCreateCity(cityName)));
+	}
+
+	private City findOrCreateCity(String cityName) {
+		City city = this.repository.findCityByName(cityName);
+		return city != null ? city : new City().create(cityName);
 	}
 
 	private void propertyValidation(String name, int capacity, String cityName) {

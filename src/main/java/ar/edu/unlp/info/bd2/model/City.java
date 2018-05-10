@@ -26,5 +26,10 @@ public class City implements Persistable {
 	public Long getId() {
 		return id;
 	}
+
+	public City create(String name) {
+		this.name = name;
+		return this;
+	}
 	
 }
