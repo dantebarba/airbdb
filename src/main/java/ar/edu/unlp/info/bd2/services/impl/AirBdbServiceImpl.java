@@ -3,16 +3,22 @@ package ar.edu.unlp.info.bd2.services.impl;
 import java.util.Date;
 import java.util.List;
 
-import ar.edu.unlp.info.bd2.model.*;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import ar.edu.unlp.info.bd2.exceptions.RateException;
 import ar.edu.unlp.info.bd2.exceptions.ReservationException;
+import ar.edu.unlp.info.bd2.model.Apartment;
+import ar.edu.unlp.info.bd2.model.City;
+import ar.edu.unlp.info.bd2.model.PrivateRoom;
+import ar.edu.unlp.info.bd2.model.Property;
+import ar.edu.unlp.info.bd2.model.Reservation;
+import ar.edu.unlp.info.bd2.model.ReservationRating;
+import ar.edu.unlp.info.bd2.model.User;
 import ar.edu.unlp.info.bd2.repositories.AirBdbRepository;
-import ar.edu.unlp.info.bd2.services.AirBdbService;
+import ar.edu.unlp.info.bd2.services.AirBdbStatisticsService;
 
-public class AirBdbServiceImpl implements AirBdbService {
+public class AirBdbServiceImpl implements AirBdbStatisticsService {
 
 	AirBdbRepository repository = null;
 
@@ -55,7 +61,7 @@ public class AirBdbServiceImpl implements AirBdbService {
 
 		Assert.hasLength(username, "Se debe ingresar un usuario.");
 		Assert.hasLength(name, "Se debe ingresar un nombre.");
-		Assert.isNull(this.getUserByUsername(username), "Ya existe un usuario con username " + username);
+//		Assert.isNull(this.getUserByUsername(username), "Ya existe un usuario con username " + username);
 
 		return (User) repository.persist(User.create(username, name));
 	}
@@ -94,7 +100,6 @@ public class AirBdbServiceImpl implements AirBdbService {
 		Assert.hasText(name, "El nombre no puede estar vacio");
 		Assert.hasText(cityName, "Se debe ingresar la ciudad");
 		Assert.isTrue(capacity > 0, "Debe poder ser ocupada.");
-		Assert.isNull(this.getPropertyByName(name), "La propiedad ya existe");
 	}
 
 	@Override
@@ -144,7 +149,7 @@ public class AirBdbServiceImpl implements AirBdbService {
 		Assert.notNull(reservation, "La reserva ingresada no se encuentra");
 		
 		Assert.isTrue(points > 0, "El puntaje debe ser mayor a 0.");
-		Assert.isTrue(points <= 5, "El puntaje debe ser menor o igual a 5.");		
+//		Assert.isTrue(points <= 5, "El puntaje debe ser menor o igual a 5.");		
 		
 		reservation.rate(points, comment);
 	}
@@ -168,6 +173,68 @@ public class AirBdbServiceImpl implements AirBdbService {
 		Assert.notNull(id, "Se debe ingresar una id valida");
 
 		return (Reservation) repository.find(id, Reservation.class);
+	}
+
+	@Override
+	public List<Property> getAllPropertiesReservedByUser(String userEmail) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<User> getUsersSpendingMoreThan(double amount) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Object[]> getApartmentTop3Ranking() {
+		return null;
+	}
+
+	@Override
+	public List<User> getUsersThatReservedMoreThan1PropertyDuringASpecificYear(int year) {
+		return null;
+	}
+
+	@Override
+	public List<Property> getPropertiesThatHaveBeenReservedByMoreThanOneUserWithCapacityMoreThan(int capacity) {
+		return null;
+	}
+
+	@Override
+	public List<Reservation> getReservationsInCitiesForUser(String username, String... cities) {
+		return null;
+	}
+
+	@Override
+	public List<City> getCitiesThatHaveReservationsBetween(Date from, Date to) {
+		return null;
+	}
+
+	@Override
+	public List<User> getUsersThatReservedOnlyInCities(String... cities) {
+		return null;
+	}
+
+	@Override
+	public Reservation getMostExpensivePrivateRoomReservation() {
+		return null;
+	}
+
+	@Override
+	public List<String> getHotmailUsersWithAllTheirReservationsFinished() {
+		return null;
+	}
+
+	@Override
+	public Double getTotalRevenueForFinishedReservationsDuringYear(int year) {
+		return null;
+	}
+
+	@Override
+	public List<User> getMatchingUsersThatOnlyHaveReservationsInCities(String usernamePart, String... cities) {
+		return null;
 	}
 
 }
