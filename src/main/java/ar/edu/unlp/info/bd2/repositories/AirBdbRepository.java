@@ -2,6 +2,7 @@ package ar.edu.unlp.info.bd2.repositories;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -102,6 +103,12 @@ public class AirBdbRepository {
 		List<Reservation> result = (List<Reservation>) this.sessionFactory.getCurrentSession().createQuery(qlString)
 				.setParameter("class", clazz.getSimpleName()).getResultList();
 		return result.isEmpty() ? null : result.get(0);
+	}
+
+	public Double getTotalRevenueForFinishedReservationsDuringYear(Date from, Date to) {
+		String qlString = "select sum(reservation.price) from Reservation reservation where reservation.status = 'FINISHED' and reservation.from >= :from and reservation.to <= :to ";
+		Double priceSum = (Double) this.sessionFactory.getCurrentSession().createQuery(qlString).setParameter("from", from).setParameter("to", to).getSingleResult();
+		return priceSum;
 	}
 
 }

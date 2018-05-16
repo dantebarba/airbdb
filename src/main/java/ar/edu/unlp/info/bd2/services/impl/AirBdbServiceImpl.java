@@ -1,5 +1,6 @@
 package ar.edu.unlp.info.bd2.services.impl;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -235,7 +236,12 @@ public class AirBdbServiceImpl implements AirBdbStatisticsService {
 
 	@Override
 	public Double getTotalRevenueForFinishedReservationsDuringYear(int year) {
-		return null;
+		Calendar cal = Calendar.getInstance();
+		cal.set(year, Calendar.JANUARY, 01);
+		Date from = cal.getTime();
+		cal.set(year, Calendar.DECEMBER, 31);
+		Date to = cal.getTime();
+		return this.repository.getTotalRevenueForFinishedReservationsDuringYear(from, to);
 	}
 
 	@Override
