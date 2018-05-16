@@ -89,4 +89,19 @@ public class AirBdbRepository {
 		return !cities.isEmpty() ? cities.get(0) : null;
 	}
 
+	public List<City> getCitiesThatHaveReservationsBetween(Date from, Date to) {
+		List<City> cities = (List<City>) this.sessionFactory.getCurrentSession()
+				.createQuery(
+						"select distinct property.city from Reservation reservation join reservation.property property where reservation.from >= :from and reservation.to <= :to")
+				.setParameter("from", from).setParameter("to", to).getResultList();
+		return cities;
+	}
+
+	public Reservation getMostExpensivePrivateRoomReservation(Class<? extends Property> clazz) {
+		String qlString = "from Reservation where price in (select max(reservation.price) from Reservation reservation where reservation.property.class = :class)";
+		List<Reservation> result = (List<Reservation>) this.sessionFactory.getCurrentSession().createQuery(qlString)
+				.setParameter("class", clazz.getSimpleName()).getResultList();
+		return result.isEmpty() ? null : result.get(0);
+	}
+
 }

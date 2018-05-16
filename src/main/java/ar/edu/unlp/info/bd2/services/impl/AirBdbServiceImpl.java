@@ -214,7 +214,8 @@ public class AirBdbServiceImpl implements AirBdbStatisticsService {
 
 	@Override
 	public List<City> getCitiesThatHaveReservationsBetween(Date from, Date to) {
-		return null;
+		List<City> citiesThatHaveReservationsBetween = this.repository.getCitiesThatHaveReservationsBetween(from, to);
+		return citiesThatHaveReservationsBetween;
 	}
 
 	@Override
@@ -224,7 +225,7 @@ public class AirBdbServiceImpl implements AirBdbStatisticsService {
 
 	@Override
 	public Reservation getMostExpensivePrivateRoomReservation() {
-		return null;
+		return this.repository.getMostExpensivePrivateRoomReservation(PrivateRoom.class);
 	}
 
 	@Override
