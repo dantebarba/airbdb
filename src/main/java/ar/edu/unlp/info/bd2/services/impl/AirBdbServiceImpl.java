@@ -221,7 +221,8 @@ public class AirBdbServiceImpl implements AirBdbStatisticsService {
 
 	@Override
 	public List<User> getUsersThatReservedOnlyInCities(String... cities) {
-		return null;
+		Assert.notEmpty(cities, "La lista no debe ingresar vacía");
+		return this.repository.getUsersThatReservedOnlyInCities(cities);
 	}
 
 	@Override

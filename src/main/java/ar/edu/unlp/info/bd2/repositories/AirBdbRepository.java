@@ -1,8 +1,8 @@
 package ar.edu.unlp.info.bd2.repositories;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -109,6 +109,13 @@ public class AirBdbRepository {
 		String qlString = "select sum(reservation.price) from Reservation reservation where reservation.status = 'FINISHED' and reservation.from >= :from and reservation.to <= :to ";
 		Double priceSum = (Double) this.sessionFactory.getCurrentSession().createQuery(qlString).setParameter("from", from).setParameter("to", to).getSingleResult();
 		return priceSum;
+	}
+
+	public List<User> getUsersThatReservedOnlyInCities(String[] cities) {
+		String qlString = "select reservations.user from Reservation reservations join reservations.property property join property.city city where city.name in (:names) group by reservations.user.id having count(distinct city.name) = :listSize";
+		List<User> resultList = this.sessionFactory.getCurrentSession().createQuery(qlString).setParameterList("names", Arrays.asList(cities))
+				.setParameter("listSize", new Long(cities.length)).getResultList();
+		return resultList;
 	}
 
 }
