@@ -89,4 +89,42 @@ public class AirBdbRepository {
 		return !cities.isEmpty() ? cities.get(0) : null;
 	}
 
+	public List<Property> getAllPropertiesReservedByUser(String userEmail) {
+
+		return this.sessionFactory.getCurrentSession()
+				.createQuery("from Property property where property.id in (select reservation.property.id from Reservation reservation where reservation.user.username =:email)")
+				.setParameter("email", userEmail).getResultList();
+	}
+
+    public List<String> getHotmailUsersWithAllTheirReservationsFinished() {
+
+        return this.sessionFactory.getCurrentSession()
+                .createQuery("select distinct us.username from User us where us.username like '%@hotmail.com' AND not exists (from Reservation res where res.status!=:status and res.user.id=us.id)")
+                .setParameter("status", ReservationStatus.FINISHED)
+                .getResultList();
+    }
+
+    public List<Property> getPropertiesThatHaveBeenReservedByMoreThanOneUserWithCapacityMoreThan(int capacity) {
+
+        return this.sessionFactory.getCurrentSession()
+                .createQuery(
+                        "from Property pro2\n" +
+                                "where 1 < (select count(distinct res.user.id)\n" +
+                                "from Reservation res \n" +
+                                "where res.property.id= pro2.id)\n" +
+                                "and pro2.capacity >:capacity ")
+                .setParameter("capacity", capacity)
+                .getResultList();
+    }
+
+    public List<User> getUsersSpendingMoreThan(double amount) {
+        return this.sessionFactory.getCurrentSession()
+                .createQuery("from User user1\n" +
+                        "where :amount < (select sum(res.price)\n" +
+                        "\t\t\t  from user1.reservations res \n" +
+                        "     \t\t ) "
+                )
+                .setParameter("amount", amount)
+                .getResultList();
+    }
 }

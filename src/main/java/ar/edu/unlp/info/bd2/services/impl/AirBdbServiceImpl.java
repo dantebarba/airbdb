@@ -182,14 +182,13 @@ public class AirBdbServiceImpl implements AirBdbStatisticsService {
 
 	@Override
 	public List<Property> getAllPropertiesReservedByUser(String userEmail) {
-		// TODO Auto-generated method stub
-		return null;
+
+		return repository.getAllPropertiesReservedByUser(userEmail);
 	}
 
 	@Override
 	public List<User> getUsersSpendingMoreThan(double amount) {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.getUsersSpendingMoreThan(amount); // TODO Auto-generated method stu
 	}
 
 	@Override
@@ -204,7 +203,7 @@ public class AirBdbServiceImpl implements AirBdbStatisticsService {
 
 	@Override
 	public List<Property> getPropertiesThatHaveBeenReservedByMoreThanOneUserWithCapacityMoreThan(int capacity) {
-		return null;
+		return repository.getPropertiesThatHaveBeenReservedByMoreThanOneUserWithCapacityMoreThan(capacity);
 	}
 
 	@Override
@@ -229,7 +228,8 @@ public class AirBdbServiceImpl implements AirBdbStatisticsService {
 
 	@Override
 	public List<String> getHotmailUsersWithAllTheirReservationsFinished() {
-		return null;
+
+		return repository.getHotmailUsersWithAllTheirReservationsFinished();
 	}
 
 	@Override
