@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import ar.edu.unlp.info.bd2.exceptions.RateException;
+import ar.edu.unlp.info.bd2.exceptions.RepeatedUsernameException;
 import ar.edu.unlp.info.bd2.exceptions.ReservationException;
 import ar.edu.unlp.info.bd2.model.Apartment;
 import ar.edu.unlp.info.bd2.model.City;
@@ -17,9 +18,10 @@ import ar.edu.unlp.info.bd2.model.Reservation;
 import ar.edu.unlp.info.bd2.model.ReservationRating;
 import ar.edu.unlp.info.bd2.model.User;
 import ar.edu.unlp.info.bd2.repositories.AirBdbRepository;
+import ar.edu.unlp.info.bd2.services.AirBdbService;
 import ar.edu.unlp.info.bd2.services.AirBdbStatisticsService;
 
-public class AirBdbServiceImpl implements AirBdbStatisticsService {
+public class AirBdbServiceImpl implements AirBdbStatisticsService, AirBdbService {
 
 	AirBdbRepository repository = null;
 
@@ -58,11 +60,13 @@ public class AirBdbServiceImpl implements AirBdbStatisticsService {
 
 	@Override
 	@Transactional
-	public User createUser(String username, String name) {
+	public User createUser(String username, String name) throws RepeatedUsernameException {
 
 		Assert.hasLength(username, "Se debe ingresar un usuario.");
 		Assert.hasLength(name, "Se debe ingresar un nombre.");
-//		Assert.isNull(this.getUserByUsername(username), "Ya existe un usuario con username " + username);
+		username = username.trim();
+		if (this.getUserByUsername(username) != null)
+			throw new RepeatedUsernameException();
 
 		return (User) repository.persist(User.create(username, name));
 	}

@@ -172,10 +172,10 @@ public class DBInitializer {
     User user072 = this.service.createUser("dolores@info.edu", "dolores");
     User user073 = this.service.createUser("ullam@fruit.net", "ullam");
     User user074 = this.service.createUser("consequuntur@unlp.edu.ar", "consequuntur");
-    User user075 = this.service.createUser("sit@outlook.com", "sit");
+    User user075 = this.service.createUser("situs@outlook.com", "sit");
     User user076 = this.service.createUser("vitae@gmail.com", "vitae");
     User user077 = this.service.createUser("labore@fruit.net", "labore");
-    User user078 = this.service.createUser("nihil@hotmail.com", "nihil");
+    User user078 = this.service.createUser("nihiles@hotmail.com", "nihil");
     User user079 = this.service.createUser("natus@outlook.com", "natus");
     User user080 = this.service.createUser("qui@info.edu", "qui");
     Date from001 = sdf.parse("1/9/2013");

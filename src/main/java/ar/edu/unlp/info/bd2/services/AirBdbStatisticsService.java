@@ -1,14 +1,15 @@
 package ar.edu.unlp.info.bd2.services;
 
-import java.util.Date;
-import java.util.List;
-
 import ar.edu.unlp.info.bd2.model.City;
 import ar.edu.unlp.info.bd2.model.Property;
 import ar.edu.unlp.info.bd2.model.Reservation;
 import ar.edu.unlp.info.bd2.model.User;
 
-public interface AirBdbStatisticsService extends AirBdbService {
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+public interface AirBdbStatisticsService {
 
   /**
    * Obtiene todas las propiedades que fueron reservadas por el usuario con username <code>userEmail</code>

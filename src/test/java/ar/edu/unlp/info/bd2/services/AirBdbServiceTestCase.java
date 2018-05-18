@@ -2,9 +2,9 @@ package ar.edu.unlp.info.bd2.services;
 
 import ar.edu.unlp.info.bd2.config.AppConfig;
 import ar.edu.unlp.info.bd2.config.HibernateConfiguration;
-import ar.edu.unlp.info.bd2.exceptions.RateException;
-import ar.edu.unlp.info.bd2.exceptions.ReservationException;
+import ar.edu.unlp.info.bd2.exceptions.RepeatedUsernameException;
 import ar.edu.unlp.info.bd2.model.*;
+import ar.edu.unlp.info.bd2.exceptions.*;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.junit.Assert;
@@ -31,11 +31,21 @@ public class AirBdbServiceTestCase {
   AirBdbService service;
 
   @Test
-  public void testCreateUser() {
+  public void testCreateUser() throws RepeatedUsernameException{
+    boolean exceptionThrown = false;
+
     this.service.createUser("user@email.com", "user");
     User user = this.service.getUserByUsername("user@email.com");
     Assert.assertNotNull(user);
     Assert.assertEquals("user@email.com", user.getUsername());
+
+    try {this.service.createUser("user@email.com", "user");}
+    catch (RepeatedUsernameException e){
+      exceptionThrown = true;
+    }
+    if (!exceptionThrown) {
+      Assert.fail("Creating more than one user with the same username should not be allowed.");
+    }
   }
 
   @Test
@@ -55,7 +65,7 @@ public class AirBdbServiceTestCase {
   }
 
   @Test
-  public void testRentProperty() throws ParseException, ReservationException {
+  public void testRentProperty() throws ParseException, ReservationException, RepeatedUsernameException {
     Apartment apartment = this.service.createAparment("Apartment with 2 Rooms", "Cozy Apartment close to City Center", 45.0, 2, 2, "La Plata");
     User user = this.service.createUser("user@email.com", "user");
 
@@ -77,7 +87,7 @@ public class AirBdbServiceTestCase {
   }
 
   @Test
-  public void testRentPropertyCollision() throws ParseException, ReservationException {
+  public void testRentPropertyCollision() throws ParseException, ReservationException, RepeatedUsernameException {
     Property property = this.service.createAparment("Apartment with 2 Rooms", "Cozy Apartment close to City Center", 45.0, 2,2, "La Plata" );
     User user = this.service.createUser("user@email.com", "user");
 
@@ -93,7 +103,7 @@ public class AirBdbServiceTestCase {
   }
 
   @Test
-  public void testIsPropertyAvailable() throws ParseException, ReservationException {
+  public void testIsPropertyAvailable() throws ParseException, ReservationException, RepeatedUsernameException {
     Property property = this.service.createAparment("Apartment with 2 Rooms", "Cozy Apartment close to City Center", 45.0, 2,2, "La Plata" );
     User user = this.service.createUser("user@email.com", "user");
 
@@ -115,7 +125,7 @@ public class AirBdbServiceTestCase {
   }
 
   @Test
-  public void testRateReservation() throws ParseException, ReservationException, RateException {
+  public void testRateReservation() throws ParseException, ReservationException, RateException, RepeatedUsernameException {
     boolean exceptionThrown = false;
     Property property = this.service.createAparment("Apartment with 2 Rooms", "Cozy Apartment close to City Center", 45.0, 2,2, "La Plata" );
     User user = this.service.createUser("user@email.com", "user");
@@ -145,6 +155,13 @@ public class AirBdbServiceTestCase {
     Assert.assertNotNull(rating);
     Assert.assertEquals(1, rating.getPoints());
     Assert.assertEquals("Very dirty and uncomfortable", rating.getComment());
+  }
+
+  @Test
+  public void testCapacityInApartments() throws Exception {
+    Property property = this.service.createAparment("Apartment Capacity Test", "Cozy Apartment close to City Center", 45.0, 3,2, "La Plata" );
+    Property propertyFromDb = this.service.getPropertyByName("Apartment Capacity Test");
+    Assert.assertEquals(3, propertyFromDb.getCapacity());
   }
 
 }
