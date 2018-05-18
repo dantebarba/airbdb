@@ -1,5 +1,6 @@
 package ar.edu.unlp.info.bd2.services.impl;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -213,17 +214,19 @@ public class AirBdbServiceImpl implements AirBdbStatisticsService {
 
 	@Override
 	public List<City> getCitiesThatHaveReservationsBetween(Date from, Date to) {
-		return null;
+		List<City> citiesThatHaveReservationsBetween = this.repository.getCitiesThatHaveReservationsBetween(from, to);
+		return citiesThatHaveReservationsBetween;
 	}
 
 	@Override
 	public List<User> getUsersThatReservedOnlyInCities(String... cities) {
-		return null;
+		Assert.notEmpty(cities, "La lista no debe ingresar vacía");
+		return this.repository.getUsersThatReservedOnlyInCities(cities);
 	}
 
 	@Override
 	public Reservation getMostExpensivePrivateRoomReservation() {
-		return null;
+		return this.repository.getMostExpensivePrivateRoomReservation(PrivateRoom.class);
 	}
 
 	@Override
@@ -234,7 +237,12 @@ public class AirBdbServiceImpl implements AirBdbStatisticsService {
 
 	@Override
 	public Double getTotalRevenueForFinishedReservationsDuringYear(int year) {
-		return null;
+		Calendar cal = Calendar.getInstance();
+		cal.set(year, Calendar.JANUARY, 01);
+		Date from = cal.getTime();
+		cal.set(year, Calendar.DECEMBER, 31);
+		Date to = cal.getTime();
+		return this.repository.getTotalRevenueForFinishedReservationsDuringYear(from, to);
 	}
 
 	@Override

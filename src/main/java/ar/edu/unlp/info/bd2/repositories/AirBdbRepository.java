@@ -1,6 +1,7 @@
 package ar.edu.unlp.info.bd2.repositories;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class AirBdbRepository {
 
 	/**
 	 * <b>Why use persist vs save?. </b>
-	 * 
+	 *
 	 * Para los casos de uso presentados, siempre se persisten Transient
 	 * Objects. Es preferible utilizar persist debido a que no gestiona el
 	 * INSERT inmediatamente, sino que lo hace al cierre de la transacción.
@@ -51,16 +52,16 @@ public class AirBdbRepository {
 	 * executed instantly regardless of the state of the transaction (which
 	 * generally is a bad thing). Persist won't execute any statements outside
 	 * of the currently running transaction just to assign the identifier.</i>
-	 * 
+	 *
 	 * @see <a href=
 	 *      "https://stackoverflow.com/questions/5862680/whats-the-advantage-of-persist-vs-save-in-hibernate"
 	 *      >Stackoverflow</a>
-	 * 
+	 *
 	 * @see <a href=
 	 *      "https://stackoverflow.com/questions/161224/what-are-the-differences-between-the-different-saving-methods-in-hibernate">Stackoverflow
 	 *      2</a>
-	 * 
-	 * 
+	 *
+	 *
 	 * @param obj
 	 * @return the persisted object
 	 */
@@ -127,4 +128,33 @@ public class AirBdbRepository {
                 .setParameter("amount", amount)
                 .getResultList();
     }
+
+	public List<City> getCitiesThatHaveReservationsBetween(Date from, Date to) {
+		List<City> cities = (List<City>) this.sessionFactory.getCurrentSession()
+				.createQuery(
+						"select distinct property.city from Reservation reservation join reservation.property property where reservation.from >= :from and reservation.to <= :to")
+				.setParameter("from", from).setParameter("to", to).getResultList();
+		return cities;
+	}
+
+	public Reservation getMostExpensivePrivateRoomReservation(Class<? extends Property> clazz) {
+		String qlString = "from Reservation where price in (select max(reservation.price) from Reservation reservation where reservation.property.class = :class)";
+		List<Reservation> result = (List<Reservation>) this.sessionFactory.getCurrentSession().createQuery(qlString)
+				.setParameter("class", clazz.getSimpleName()).getResultList();
+		return result.isEmpty() ? null : result.get(0);
+	}
+
+	public Double getTotalRevenueForFinishedReservationsDuringYear(Date from, Date to) {
+		String qlString = "select sum(reservation.price) from Reservation reservation where reservation.status = 'FINISHED' and reservation.from >= :from and reservation.to <= :to ";
+		Double priceSum = (Double) this.sessionFactory.getCurrentSession().createQuery(qlString).setParameter("from", from).setParameter("to", to).getSingleResult();
+		return priceSum;
+	}
+
+	public List<User> getUsersThatReservedOnlyInCities(String[] cities) {
+		String qlString = "select reservations.user from Reservation reservations join reservations.property property join property.city city where city.name in (:names) group by reservations.user.id having count(distinct city.name) = :listSize";
+		List<User> resultList = this.sessionFactory.getCurrentSession().createQuery(qlString).setParameterList("names", Arrays.asList(cities))
+				.setParameter("listSize", new Long(cities.length)).getResultList();
+		return resultList;
+	}
+
 }
