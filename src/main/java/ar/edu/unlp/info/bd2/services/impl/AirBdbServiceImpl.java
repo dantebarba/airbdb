@@ -194,8 +194,8 @@ public class AirBdbServiceImpl implements AirBdbStatisticsService {
 
 	@Override
 	public List<Object[]> getApartmentTop3Ranking() {
-		return null;
-	}
+		return this.repository.getApartmentTop3Ranking();
+		}
 
 	@Override
 	public List<User> getUsersThatReservedMoreThan1PropertyDuringASpecificYear(int year) {
@@ -239,7 +239,7 @@ public class AirBdbServiceImpl implements AirBdbStatisticsService {
 
 	@Override
 	public List<User> getMatchingUsersThatOnlyHaveReservationsInCities(String usernamePart, String... cities) {
-		return null;
+		return this.repository.getMatchingUsersThatOnlyHaveReservationsInCities(usernamePart,cities);
 	}
 
 }

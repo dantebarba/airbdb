@@ -1,6 +1,7 @@
 package ar.edu.unlp.info.bd2.repositories;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -88,5 +89,21 @@ public class AirBdbRepository {
 				.createQuery("from City where name = :cityName").setParameter("cityName", cityName).getResultList();
 		return !cities.isEmpty() ? cities.get(0) : null;
 	}
+
+
+	public List<Object[]> getApartmentTop3Ranking() {
+		return (List<Object[]>) this.sessionFactory.getCurrentSession().createQuery("select res.property,avg(res.rating.points)" +
+				" as prom from Reservation res where res.status = 'FINISHED' AND res.property.class = 'Apartment'" +
+				" group by res.property.id order by prom DESC").setMaxResults(3).getResultList();
+		}
+    public List<User> getMatchingUsersThatOnlyHaveReservationsInCities(String usernamePart, String... cities) {
+        return this.sessionFactory.getCurrentSession().createQuery("select distinct us from User us join us.reservations res " +
+                "where us.username like :subusername  and not exists " +
+                "(from Reservation res2 where res2.property.city.name " +
+                "not in :cities and res2.user.id = us.id)")
+                .setParameter("subusername",'%' + usernamePart + '%' )
+                .setParameterList("cities",Arrays.asList (cities)).getResultList();
+
+    }
 
 }
