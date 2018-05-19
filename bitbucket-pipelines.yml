@@ -24,7 +24,7 @@ definitions:
     maven: ~/.m2
   services:
     mysql:
-      image: mysql
+      image: mysql:5.7
       environment:
         MYSQL_DATABASE: 'bd2_grupo23'
         MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
