@@ -199,7 +199,7 @@ public class AirBdbServiceImpl implements AirBdbStatisticsService {
 
 	@Override
 	public List<User> getUsersThatReservedMoreThan1PropertyDuringASpecificYear(int year) {
-		return null;
+		return  this.repository.getUsersThatReservedMoreThan1PropertyDuringASpecificYear(year);
 	}
 
 	@Override
@@ -209,7 +209,7 @@ public class AirBdbServiceImpl implements AirBdbStatisticsService {
 
 	@Override
 	public List<Reservation> getReservationsInCitiesForUser(String username, String... cities) {
-		return null;
+		return this.repository.getReservationsInCitiesForUser(username,cities);
 	}
 
 	@Override

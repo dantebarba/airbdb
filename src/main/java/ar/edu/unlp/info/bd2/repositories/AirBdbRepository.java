@@ -1,6 +1,8 @@
 package ar.edu.unlp.info.bd2.repositories;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -105,5 +107,19 @@ public class AirBdbRepository {
                 .setParameterList("cities",Arrays.asList (cities)).getResultList();
 
     }
-
+    public List<Reservation> getReservationsInCitiesForUser(String username, String... cities) {
+        return this.sessionFactory.getCurrentSession()
+                .createQuery("select res from Reservation res " +
+                        "where res.user.username = :us " +
+                        "and res.property.city.name in :cities")
+                .setParameter("us",username)
+                .setParameterList("cities",Arrays.asList(cities)).getResultList();
+    }
+    public List<User> getUsersThatReservedMoreThan1PropertyDuringASpecificYear(int year){
+        return this.sessionFactory.getCurrentSession()
+                .createQuery("select res.user from Reservation res" +
+                        " where res.from >= '2014/01/01' and" +
+                        " res.from < '2015/01/01' group by res.user.id " +
+                        "having count(*) > 1").getResultList();
+    }
 }
