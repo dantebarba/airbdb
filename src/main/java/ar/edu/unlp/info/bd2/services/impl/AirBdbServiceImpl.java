@@ -1,5 +1,6 @@
 package ar.edu.unlp.info.bd2.services.impl;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import ar.edu.unlp.info.bd2.exceptions.RateException;
+import ar.edu.unlp.info.bd2.exceptions.RepeatedUsernameException;
 import ar.edu.unlp.info.bd2.exceptions.ReservationException;
 import ar.edu.unlp.info.bd2.model.Apartment;
 import ar.edu.unlp.info.bd2.model.City;
@@ -16,9 +18,10 @@ import ar.edu.unlp.info.bd2.model.Reservation;
 import ar.edu.unlp.info.bd2.model.ReservationRating;
 import ar.edu.unlp.info.bd2.model.User;
 import ar.edu.unlp.info.bd2.repositories.AirBdbRepository;
+import ar.edu.unlp.info.bd2.services.AirBdbService;
 import ar.edu.unlp.info.bd2.services.AirBdbStatisticsService;
 
-public class AirBdbServiceImpl implements AirBdbStatisticsService {
+public class AirBdbServiceImpl implements AirBdbStatisticsService, AirBdbService {
 
 	AirBdbRepository repository = null;
 
@@ -57,11 +60,13 @@ public class AirBdbServiceImpl implements AirBdbStatisticsService {
 
 	@Override
 	@Transactional
-	public User createUser(String username, String name) {
+	public User createUser(String username, String name) throws RepeatedUsernameException {
 
 		Assert.hasLength(username, "Se debe ingresar un usuario.");
 		Assert.hasLength(name, "Se debe ingresar un nombre.");
-//		Assert.isNull(this.getUserByUsername(username), "Ya existe un usuario con username " + username);
+		username = username.trim();
+		if (this.getUserByUsername(username) != null)
+			throw new RepeatedUsernameException();
 
 		return (User) repository.persist(User.create(username, name));
 	}
@@ -182,14 +187,13 @@ public class AirBdbServiceImpl implements AirBdbStatisticsService {
 
 	@Override
 	public List<Property> getAllPropertiesReservedByUser(String userEmail) {
-		// TODO Auto-generated method stub
-		return null;
+
+		return repository.getAllPropertiesReservedByUser(userEmail);
 	}
 
 	@Override
 	public List<User> getUsersSpendingMoreThan(double amount) {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.getUsersSpendingMoreThan(amount); // TODO Auto-generated method stu
 	}
 
 	@Override
@@ -204,7 +208,7 @@ public class AirBdbServiceImpl implements AirBdbStatisticsService {
 
 	@Override
 	public List<Property> getPropertiesThatHaveBeenReservedByMoreThanOneUserWithCapacityMoreThan(int capacity) {
-		return null;
+		return repository.getPropertiesThatHaveBeenReservedByMoreThanOneUserWithCapacityMoreThan(capacity);
 	}
 
 	@Override
@@ -214,27 +218,35 @@ public class AirBdbServiceImpl implements AirBdbStatisticsService {
 
 	@Override
 	public List<City> getCitiesThatHaveReservationsBetween(Date from, Date to) {
-		return null;
+		List<City> citiesThatHaveReservationsBetween = this.repository.getCitiesThatHaveReservationsBetween(from, to);
+		return citiesThatHaveReservationsBetween;
 	}
 
 	@Override
 	public List<User> getUsersThatReservedOnlyInCities(String... cities) {
-		return null;
+		Assert.notEmpty(cities, "La lista no debe ingresar vacía");
+		return this.repository.getUsersThatReservedOnlyInCities(cities);
 	}
 
 	@Override
 	public Reservation getMostExpensivePrivateRoomReservation() {
-		return null;
+		return this.repository.getMostExpensivePrivateRoomReservation(PrivateRoom.class);
 	}
 
 	@Override
 	public List<String> getHotmailUsersWithAllTheirReservationsFinished() {
-		return null;
+
+		return repository.getHotmailUsersWithAllTheirReservationsFinished();
 	}
 
 	@Override
 	public Double getTotalRevenueForFinishedReservationsDuringYear(int year) {
-		return null;
+		Calendar cal = Calendar.getInstance();
+		cal.set(year, Calendar.JANUARY, 01);
+		Date from = cal.getTime();
+		cal.set(year, Calendar.DECEMBER, 31);
+		Date to = cal.getTime();
+		return this.repository.getTotalRevenueForFinishedReservationsDuringYear(from, to);
 	}
 
 	@Override

@@ -1,17 +1,15 @@
 package ar.edu.unlp.info.bd2.services;
 
-import java.util.Date;
-
 import ar.edu.unlp.info.bd2.exceptions.RateException;
+import ar.edu.unlp.info.bd2.exceptions.RepeatedUsernameException;
 import ar.edu.unlp.info.bd2.exceptions.ReservationException;
-import ar.edu.unlp.info.bd2.model.Apartment;
-import ar.edu.unlp.info.bd2.model.PrivateRoom;
-import ar.edu.unlp.info.bd2.model.Property;
-import ar.edu.unlp.info.bd2.model.Reservation;
-import ar.edu.unlp.info.bd2.model.ReservationRating;
-import ar.edu.unlp.info.bd2.model.User;
+import ar.edu.unlp.info.bd2.model.*;
+import org.springframework.transaction.annotation.Transactional;
 
-public interface AirBdbService {
+import java.util.Date;
+import java.util.List;
+
+public interface AirBdbService extends AirBdbStatisticsService {
 
   /**
    * Crea un usuario
@@ -19,7 +17,7 @@ public interface AirBdbService {
    * @param name nombre real del usuario
    * @return el usuario creado
    */
-  User createUser(String username, String name);
+  User createUser(String username, String name) throws RepeatedUsernameException;
 
   /**
    * Obtiene un usuario por su username (email)
