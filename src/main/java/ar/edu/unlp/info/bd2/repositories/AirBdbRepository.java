@@ -117,9 +117,8 @@ public class AirBdbRepository {
     }
     public List<User> getUsersThatReservedMoreThan1PropertyDuringASpecificYear(int year){
         return this.sessionFactory.getCurrentSession()
-                .createQuery("select res.user from Reservation res" +
-                        " where res.from >= '2014/01/01' and" +
-                        " res.from < '2015/01/01' group by res.user.id " +
-                        "having count(*) > 1").getResultList();
+                .createQuery("select res.user from Reservation res where year(res.from) = :year " +
+						"or year(res.to) = :year  " +
+						"group by res.user.id having count(*) > 1").setParameter("year",year).getResultList();
     }
 }
