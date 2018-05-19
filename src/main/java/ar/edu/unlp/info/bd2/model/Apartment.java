@@ -16,8 +16,8 @@ public class Apartment extends Property {
 	}
 
 	public Apartment create(String name, String description, double price, int capacity, int rooms2,
-			String cityName) {
-		super.create(name, description, price, capacity, cityName);
+			City city) {
+		super.create(name, description, price, capacity, city);
 		this.rooms = rooms2;
 		return this;
 	}

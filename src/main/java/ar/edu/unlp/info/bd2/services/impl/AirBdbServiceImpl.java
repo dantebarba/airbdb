@@ -1,18 +1,27 @@
 package ar.edu.unlp.info.bd2.services.impl;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import ar.edu.unlp.info.bd2.model.*;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import ar.edu.unlp.info.bd2.exceptions.RateException;
+import ar.edu.unlp.info.bd2.exceptions.RepeatedUsernameException;
 import ar.edu.unlp.info.bd2.exceptions.ReservationException;
+import ar.edu.unlp.info.bd2.model.Apartment;
+import ar.edu.unlp.info.bd2.model.City;
+import ar.edu.unlp.info.bd2.model.PrivateRoom;
+import ar.edu.unlp.info.bd2.model.Property;
+import ar.edu.unlp.info.bd2.model.Reservation;
+import ar.edu.unlp.info.bd2.model.ReservationRating;
+import ar.edu.unlp.info.bd2.model.User;
 import ar.edu.unlp.info.bd2.repositories.AirBdbRepository;
 import ar.edu.unlp.info.bd2.services.AirBdbService;
+import ar.edu.unlp.info.bd2.services.AirBdbStatisticsService;
 
-public class AirBdbServiceImpl implements AirBdbService {
+public class AirBdbServiceImpl implements AirBdbStatisticsService, AirBdbService {
 
 	AirBdbRepository repository = null;
 
@@ -51,11 +60,13 @@ public class AirBdbServiceImpl implements AirBdbService {
 
 	@Override
 	@Transactional
-	public User createUser(String username, String name) {
+	public User createUser(String username, String name) throws RepeatedUsernameException {
 
 		Assert.hasLength(username, "Se debe ingresar un usuario.");
 		Assert.hasLength(name, "Se debe ingresar un nombre.");
-		Assert.isNull(this.getUserByUsername(username), "Ya existe un usuario con username " + username);
+		username = username.trim();
+		if (this.getUserByUsername(username) != null)
+			throw new RepeatedUsernameException();
 
 		return (User) repository.persist(User.create(username, name));
 	}
@@ -76,7 +87,7 @@ public class AirBdbServiceImpl implements AirBdbService {
 		Assert.isTrue(rooms > 0, "Debe tener al menos una habitación.");
 
 		return (Apartment) repository
-				.persist(new Apartment().create(name, description, price, capacity, rooms, cityName));
+				.persist(new Apartment().create(name, description, price, capacity, rooms, this.findOrCreateCity(cityName)));
 	}
 
 	@Override
@@ -85,16 +96,20 @@ public class AirBdbServiceImpl implements AirBdbService {
 			String cityName) {
 		propertyValidation(name, capacity, cityName);
 		Assert.isTrue(beds > 0, "Debe tener al menos una habitación.");
-
+		
 		return (PrivateRoom) repository
-				.persist(new PrivateRoom().create(name, description, price, capacity, beds, cityName));
+				.persist(new PrivateRoom().create(name, description, price, capacity, beds, this.findOrCreateCity(cityName)));
+	}
+
+	private City findOrCreateCity(String cityName) {
+		City city = this.repository.findCityByName(cityName);
+		return city != null ? city : new City().create(cityName);
 	}
 
 	private void propertyValidation(String name, int capacity, String cityName) {
 		Assert.hasText(name, "El nombre no puede estar vacio");
 		Assert.hasText(cityName, "Se debe ingresar la ciudad");
 		Assert.isTrue(capacity > 0, "Debe poder ser ocupada.");
-		Assert.isNull(this.getPropertyByName(name), "La propiedad ya existe");
 	}
 
 	@Override
@@ -144,7 +159,7 @@ public class AirBdbServiceImpl implements AirBdbService {
 		Assert.notNull(reservation, "La reserva ingresada no se encuentra");
 		
 		Assert.isTrue(points > 0, "El puntaje debe ser mayor a 0.");
-		Assert.isTrue(points <= 5, "El puntaje debe ser menor o igual a 5.");		
+//		Assert.isTrue(points <= 5, "El puntaje debe ser menor o igual a 5.");		
 		
 		reservation.rate(points, comment);
 	}
@@ -168,6 +183,75 @@ public class AirBdbServiceImpl implements AirBdbService {
 		Assert.notNull(id, "Se debe ingresar una id valida");
 
 		return (Reservation) repository.find(id, Reservation.class);
+	}
+
+	@Override
+	public List<Property> getAllPropertiesReservedByUser(String userEmail) {
+
+		return repository.getAllPropertiesReservedByUser(userEmail);
+	}
+
+	@Override
+	public List<User> getUsersSpendingMoreThan(double amount) {
+		return repository.getUsersSpendingMoreThan(amount); // TODO Auto-generated method stu
+	}
+
+	@Override
+	public List<Object[]> getApartmentTop3Ranking() {
+		return this.repository.getApartmentTop3Ranking();
+		}
+
+	@Override
+	public List<User> getUsersThatReservedMoreThan1PropertyDuringASpecificYear(int year) {
+		return  this.repository.getUsersThatReservedMoreThan1PropertyDuringASpecificYear(year);
+	}
+
+	@Override
+	public List<Property> getPropertiesThatHaveBeenReservedByMoreThanOneUserWithCapacityMoreThan(int capacity) {
+		return repository.getPropertiesThatHaveBeenReservedByMoreThanOneUserWithCapacityMoreThan(capacity);
+	}
+
+	@Override
+	public List<Reservation> getReservationsInCitiesForUser(String username, String... cities) {
+		return this.repository.getReservationsInCitiesForUser(username,cities);
+	}
+
+	@Override
+	public List<City> getCitiesThatHaveReservationsBetween(Date from, Date to) {
+		List<City> citiesThatHaveReservationsBetween = this.repository.getCitiesThatHaveReservationsBetween(from, to);
+		return citiesThatHaveReservationsBetween;
+	}
+
+	@Override
+	public List<User> getUsersThatReservedOnlyInCities(String... cities) {
+		Assert.notEmpty(cities, "La lista no debe ingresar vacía");
+		return this.repository.getUsersThatReservedOnlyInCities(cities);
+	}
+
+	@Override
+	public Reservation getMostExpensivePrivateRoomReservation() {
+		return this.repository.getMostExpensivePrivateRoomReservation(PrivateRoom.class);
+	}
+
+	@Override
+	public List<String> getHotmailUsersWithAllTheirReservationsFinished() {
+
+		return repository.getHotmailUsersWithAllTheirReservationsFinished();
+	}
+
+	@Override
+	public Double getTotalRevenueForFinishedReservationsDuringYear(int year) {
+		Calendar cal = Calendar.getInstance();
+		cal.set(year, Calendar.JANUARY, 01);
+		Date from = cal.getTime();
+		cal.set(year, Calendar.DECEMBER, 31);
+		Date to = cal.getTime();
+		return this.repository.getTotalRevenueForFinishedReservationsDuringYear(from, to);
+	}
+
+	@Override
+	public List<User> getMatchingUsersThatOnlyHaveReservationsInCities(String usernamePart, String... cities) {
+		return this.repository.getMatchingUsersThatOnlyHaveReservationsInCities(usernamePart,cities);
 	}
 
 }
