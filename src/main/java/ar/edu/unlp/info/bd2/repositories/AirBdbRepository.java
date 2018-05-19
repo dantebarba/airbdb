@@ -1,11 +1,6 @@
 package ar.edu.unlp.info.bd2.repositories;
 
 import java.io.Serializable;
-<<<<<<< HEAD
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-=======
->>>>>>> feature/tp2-fix
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -95,7 +90,7 @@ public class AirBdbRepository {
 		return !cities.isEmpty() ? cities.get(0) : null;
 	}
 
-<<<<<<< HEAD
+
 
 	public List<Object[]> getApartmentTop3Ranking() {
 		return (List<Object[]>) this.sessionFactory.getCurrentSession().createQuery("select res.property,avg(res.rating.points)" +
@@ -125,7 +120,7 @@ public class AirBdbRepository {
 						"or year(res.to) = :year  " +
 						"group by res.user.id having count(*) > 1").setParameter("year",year).getResultList();
     }
-=======
+
 	public List<Property> getAllPropertiesReservedByUser(String userEmail) {
 
 		return this.sessionFactory.getCurrentSession()
@@ -193,5 +188,4 @@ public class AirBdbRepository {
 		return resultList;
 	}
 
->>>>>>> feature/tp2-fix
 }
