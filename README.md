@@ -33,12 +33,11 @@ Luego se debe ejecutar, igual que en el paso anterior, el script "createDatabase
 
 ### Changelog ###
 ---
-# 2.0.2
+#### 2.0.2 ####
 - Readme.md actualizado
 ---
-# 2.0.1
+#### 2.0.1 ####
 - Implementada etapa 1 parte 2.
-
 ---
-# 1.0
+#### 1.0 ####
 - Implementada primera parte.
