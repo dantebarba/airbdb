@@ -7,7 +7,7 @@
 
 ### How-to ###
 -  Descargar mysql-server y ejecutar el servicio.
--  Clonar el **master** branch, o el **tag** de la versiÃ³n deseada. 
+-  Clonar el **master** branch, o el **tag** de la versión deseada. 
 -  Ejecutar el script "createDatabase.sh"
 ```bash
 ./createDatabase.sh # Crea el entorno, usuarios y db necesarios.
@@ -16,7 +16,7 @@
 ```bash
 mvn clean install
 ```
-Si los test pasan correctamente la construcciÃ³n sera correcta.
+Si los test pasan correctamente la construcción sera correcta.
 
 ### How-to Docker ###
 La base de datos puede ser ejecutada y administrada en un contenedor de docker.
@@ -32,12 +32,23 @@ docker-compose up -d
 Luego se debe ejecutar, igual que en el paso anterior, el script "createDatabase.sh" y las sentencias de maven.
 
 ### Changelog ###
----
+
+----
+
 #### 2.0.2 ####
-- Readme.md actualizado
----
+
+	- Readme.md actualizado
+
+----
+
 #### 2.0.1 ####
-- Implementada etapa 1 parte 2.
----
+
+	- Implementada etapa 1 parte 2.
+
+----
+
 #### 1.0 ####
-- Implementada primera parte.
+
+	- Implementada primera parte.
+	
+
