@@ -122,3 +122,71 @@ db.apartments.find({"location" : {$geoWithin: {$geometry : {
  // without index: documents: 50000, time: 173ms.
  // with index: documents: 18273, time: 148ms.
  db.apartments.createIndex( { "location" : "2dsphere" } );
+
+// 13
+db.getCollection('reservations').aggregate(
+    [ { $sample: { size: 5 } } ]
+)
+
+// 14
+    db.apartments.aggregate([
+            {
+                $geoNear: {
+                    near: { type: "Point", coordinates: [-0.127718,  51.507451] },
+                    distanceField: "dist.calculated",
+                    maxDistance: 15000,
+                    num: 50000,
+                    spherical: true
+                }
+            }
+        ]
+    );
+
+// 15
+db.apartments.aggregate([
+        {
+            $geoNear: {
+                near: { type: "Point", coordinates: [-0.127718,  51.507451] },
+                distanceField: "dist.calculated",
+                maxDistance: 15000,
+                num: 50000,
+                spherical: true
+            }
+        }
+        ,{$lookup:
+                {
+                    from: "reservations",
+                    localField: "name",
+                    foreignField: "apartmentName",
+                    as: "reservas"
+                }
+        }
+    ]
+);
+// 16
+
+db.apartments.aggregate([
+        {
+            $geoNear: {
+                near: { type: "Point", coordinates: [-0.127718,  51.507451] },
+                distanceField: "dist.calculated",
+                maxDistance: 15000,
+                num: 50000,
+                spherical: true
+            }
+        }
+        ,{$lookup:
+                {
+                    from: "reservations",
+                    localField: "name",
+                    foreignField: "apartmentName",
+                    as: "reservas"
+                }
+        },
+        {
+            $addFields: {
+                avgAmount: { $avg: "$reservas.amount" }
+            }
+        }
+    ]
+);
