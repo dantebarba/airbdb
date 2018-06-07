@@ -7,7 +7,7 @@
 
 ### How-to ###
 -  Descargar mysql-server y ejecutar el servicio.
--  Clonar el **master** branch, o el **tag** de la versión deseada. 
+-  Clonar el **master** branch, o el **tag** de la versi�n deseada. 
 -  Ejecutar el script "createDatabase.sh"
 ```bash
 ./createDatabase.sh # Crea el entorno, usuarios y db necesarios.
@@ -16,7 +16,7 @@
 ```bash
 mvn clean install
 ```
-Si los test pasan correctamente la construcción sera correcta.
+Si los test pasan correctamente la construcci�n sera correcta.
 
 ### How-to Docker ###
 La base de datos puede ser ejecutada y administrada en un contenedor de docker.
@@ -32,13 +32,31 @@ docker-compose up -d
 Luego se debe ejecutar, igual que en el paso anterior, el script "createDatabase.sh" y las sentencias de maven.
 
 ### Changelog ###
----
-# 2.0.2
+
+#### 3.0.0 ####
+
+- TP2 - Parte1 resuelta
+- La resolucion se encuentra en /src/main/tp2-parte1.
+- tp2-parte1-queries.js contiene las consultas en mongo.
+- tp2-parte1.md contiene la primera parte teórica del trabajo.
+
+----
+
+#### 2.0.2 ####
+
 - Readme.md actualizado
----
-# 2.0.1
+
+----
+
+#### 2.0.1 ####
+
 - Implementada etapa 1 parte 2.
 
----
-# 1.0
+----
+
+#### 1.0 ####
+
 - Implementada primera parte.
+
+	
+
