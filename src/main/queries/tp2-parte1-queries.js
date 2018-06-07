@@ -163,8 +163,8 @@ db.apartments.aggregate([
         }
     ]
 );
-// 16
 
+// 16
 db.apartments.aggregate([
         {
             $geoNear: {
