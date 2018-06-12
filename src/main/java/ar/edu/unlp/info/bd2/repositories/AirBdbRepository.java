@@ -124,7 +124,8 @@ public class AirBdbRepository {
 	public List<Property> getAllPropertiesReservedByUser(String userEmail) {
 
 		return this.sessionFactory.getCurrentSession()
-				.createQuery("from Property property where property.id in (select reservation.property.id from Reservation reservation where reservation.user.username =:email)")
+				//.createQuery("from Property property where property.id in (select reservation.property.id from Reservation reservation where reservation.user.username =:email)")
+				.createQuery("select reservation.property from Reservation reservation where reservation.user.username =:email")
 				.setParameter("email", userEmail).getResultList();
 	}
 
