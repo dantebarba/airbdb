@@ -49,8 +49,6 @@ db.apartments.createIndex({name: 1});
 db.apartments.find({name: /.*11.*/}).explain("executionStats");  // 2291 Documentos, 63ms.
 
 // 12
-var polygons = cat("/Users/dantebarba/Dev/personal/airbdb/src/main/queries/greaterlondon.geojson");
-// no funcionó la carga de archivos
 db.apartments.find({"location" : {$geoWithin: {$geometry : {
 	"type":"MultiPolygon",
 	"coordinates":[[[
