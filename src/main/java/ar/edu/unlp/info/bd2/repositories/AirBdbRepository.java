@@ -183,10 +183,11 @@ public class AirBdbRepository {
 	}
 
 	public List<User> getUsersThatReservedOnlyInCities(String[] cities) {
-		String qlString = "select reservations.user from Reservation reservations join reservations.property property join property.city city where city.name in (:names) group by reservations.user.id having count(distinct city.name) = :listSize";
-		List<User> resultList = this.sessionFactory.getCurrentSession().createQuery(qlString).setParameterList("names", Arrays.asList(cities))
-				.setParameter("listSize", new Long(cities.length)).getResultList();
-		return resultList;
+		return this.sessionFactory.getCurrentSession()
+				.createQuery("select distinct us from User us join us.reservations res where not exists "
+						+ "(from Reservation res2 where res2.property.city.name "
+						+ "not in :cities and res2.user.id = us.id)")
+				.setParameterList("cities", Arrays.asList(cities)).getResultList();
 	}
 
 }
