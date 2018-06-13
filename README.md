@@ -33,6 +33,13 @@ Luego se debe ejecutar, igual que en el paso anterior, el script "createDatabase
 
 ### Changelog ###
 
+#### 3.0.1 ####
+
+- Resolución ticket #6, consultas getUsersThatReservedOnlyInCities
+y getAllPropertiesReservedByUser
+- Se movió el TP2 a la carpeta mongodb. https://groups.google.com/forum/m/#!topic/bbdd2-2018/KdwWRzJU7t8
+
+----
 #### 3.0.0 ####
 
 - TP2 - Parte1 resuelta
