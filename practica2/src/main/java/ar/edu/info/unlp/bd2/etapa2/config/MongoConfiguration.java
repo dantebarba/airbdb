@@ -27,7 +27,7 @@ public class MongoConfiguration extends AbstractMongoConfiguration {
   }
 
   public int getGroupNumber() {
-    return 0;
+    return 23;
   }
 
 }
