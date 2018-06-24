@@ -14,9 +14,6 @@ public class User implements Persistable {
 
 	private Set<Reservation> reservations = new HashSet<Reservation>();
 	
-	/**
-	 * Usa tabla intermedia.
-	 */
 	private Set<Property> properties = new HashSet<Property>();
 
 	public String getUsername() {
