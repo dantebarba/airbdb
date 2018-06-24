@@ -83,13 +83,14 @@ public class Reservation implements Persistable {
 		this.to = to;
 	}
 
-	public Reservation create(Property property2, User user2, Date from2, Date to2) {
+	public Reservation create(Property property2, User user2, Date from2, Date to2, ReservationStatus initialStatus) {
 		this.from = from2;
 		this.to = to2;
 		this.property = property2;
 		this.user = user2;
+		this.status = initialStatus;
 		this.calculatePrice();
-		this.addReservationToUser();
+//		this.addReservationToUser();
 		return this;
 
 	}
