@@ -33,8 +33,12 @@ public class AirBdbRepository {
 		return (T) mongoTemplate.findOne(query, clazz);
 	}
 
-	public String getReservationsBetweenDates(String id, Date from, Date to) {
-		return null;
+	public List<Reservation> getReservationsBetweenDates(String propertyId, Date from, Date to) {
+		// ((reservation.from >= :from and reservation.from < :to) or
+		// (reservation.to <= :to and reservation.to > :from))
+		Query query = new Query(new Criteria().andOperator(Criteria.where("property.id").is(propertyId))
+				.orOperator(Criteria.where("from").gte(from).lt(to), Criteria.where("to").lte(to).gt(from)));
+		return mongoTemplate.find(query, Reservation.class);
 	}
 
 	public List<Reservation> getReservationsForProperty(String propertyId) {

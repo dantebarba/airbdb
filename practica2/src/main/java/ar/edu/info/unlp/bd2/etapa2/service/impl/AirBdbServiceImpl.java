@@ -72,8 +72,11 @@ public class AirBdbServiceImpl implements AirBdbService {
 		if (!this.isPropertyAvailable(propertyId, from, to))
 			throw new ReservationException();
 
-		return new Reservation().create(property, user, from, to, initialStatus);
-
+		Reservation savedEntity = this.repository.save(new Reservation().create(property, user, from, to, initialStatus));
+		
+		this.repository.save(savedEntity.getUser());
+		
+		return savedEntity;
 	}
 
 	public boolean isPropertyAvailable(String id, Date from, Date to) {

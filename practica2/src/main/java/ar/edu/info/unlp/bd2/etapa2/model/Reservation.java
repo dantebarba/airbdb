@@ -5,6 +5,7 @@ import java.util.Date;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "reservation")
@@ -20,9 +21,11 @@ public class Reservation implements Persistable {
 	private Date to;
 
 	private ReservationStatus status = ReservationStatus.CONFIRMATION_PENDING;
-
+	
+	@DBRef
 	private Property property;
 
+	@DBRef
 	private User user;
 
 	private ReservationRating rating;
@@ -90,7 +93,7 @@ public class Reservation implements Persistable {
 		this.user = user2;
 		this.status = initialStatus;
 		this.calculatePrice();
-//		this.addReservationToUser();
+		this.addReservationToUser();
 		return this;
 
 	}
