@@ -8,7 +8,12 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
+
 import ar.edu.info.unlp.bd2.etapa2.model.Reservation;
+import ar.edu.info.unlp.bd2.etapa2.model.City;
 import ar.edu.info.unlp.bd2.etapa2.model.User;
 
 public class AirBdbRepository {
@@ -45,6 +50,12 @@ public class AirBdbRepository {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("property.id").is(propertyId));
 		return this.mongoTemplate.find(query, Reservation.class);
+	}
+
+	public List<City> getCitiesMatching(String content) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("name").regex(content)).with(new Sort(Sort.Direction.ASC, "name"));
+		return this.mongoTemplate.find(query, City.class);
 	}
 
 	public void clearDb() {

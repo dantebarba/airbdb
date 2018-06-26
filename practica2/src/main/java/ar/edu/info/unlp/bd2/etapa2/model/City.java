@@ -3,6 +3,8 @@ package ar.edu.info.unlp.bd2.etapa2.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+
+
 @Document(collection = "city")
 public class City implements Persistable {
 

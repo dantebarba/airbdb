@@ -102,7 +102,7 @@ public class AirBdbServiceImpl implements AirBdbService {
 
 	@Override
 	public List<City> getCitiesMatching(String content) {
-		return null;
+		return this.repository.getCitiesMatching(content);
 	}
 
 	@Override
