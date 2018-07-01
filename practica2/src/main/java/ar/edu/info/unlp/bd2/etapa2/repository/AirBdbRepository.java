@@ -3,15 +3,16 @@ package ar.edu.info.unlp.bd2.etapa2.repository;
 import java.util.Date;
 import java.util.List;
 
+import ar.edu.info.unlp.bd2.etapa2.utils.ReservationCount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-
+import ar.edu.info.unlp.bd2.etapa2.utils.ReservationCount;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.domain.Sort.Order;
-
 import ar.edu.info.unlp.bd2.etapa2.model.Reservation;
 import ar.edu.info.unlp.bd2.etapa2.model.City;
 import ar.edu.info.unlp.bd2.etapa2.model.User;
@@ -61,5 +62,20 @@ public class AirBdbRepository {
 	public void clearDb() {
 		mongoTemplate.getDb().drop();
 	}
+
+
+	public List<ReservationCount> getReservationCountByStatus() {
+		TypedAggregation<Reservation> reservationAggregation =
+				Aggregation.newAggregation(Reservation.class,
+						Aggregation.group("status")
+
+				);
+		AggregationResults<ReservationCount> results = mongoTemplate.
+				aggregate(reservationAggregation, ReservationCount.class);
+
+		List<ReservationCount> studentResultsList = results.getMappedResults();
+
+		return studentResultsList;
+ 	}
 
 }

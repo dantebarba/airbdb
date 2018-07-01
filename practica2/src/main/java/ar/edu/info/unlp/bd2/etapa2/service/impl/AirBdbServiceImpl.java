@@ -123,7 +123,7 @@ public class AirBdbServiceImpl implements AirBdbService {
 
 	@Override
 	public List<ReservationCount> getReservationCountByStatus() {
-		return null;
+		return this.repository.getReservationCountByStatus();
 	}
 
 }

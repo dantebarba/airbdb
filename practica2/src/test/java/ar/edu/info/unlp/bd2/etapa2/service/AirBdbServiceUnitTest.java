@@ -150,6 +150,7 @@ public class AirBdbServiceUnitTest {
 
     List<ReservationCount> reservationCountByStatus = this.service.getReservationCountByStatus();
     Assert.assertEquals(3, reservationCountByStatus.size());
+
     Assert.assertTrue(
             reservationCountByStatus.stream()
                     .anyMatch(rc -> rc.getCount().equals(2L) && rc.getStatus().equals(ReservationStatus.CONFIRMED)));
