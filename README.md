@@ -7,19 +7,22 @@
 
 ### How-to ###
 -  Descargar mysql-server y ejecutar el servicio.
--  Clonar el **master** branch, o el **tag** de la versi�n deseada. 
+-  Clonar el **master** branch, o el **tag** de la versión deseada.
 -  Ejecutar el script "createDatabase.sh"
 ```bash
 ./createDatabase.sh # Crea el entorno, usuarios y db necesarios.
 ```
--  Una vez clonado el proyecto desde el **master** branch y lanzada la base de datos, ejecutar en el directorio donde se encuentre el pom.xml: 
+-  Una vez clonado el proyecto desde el **master** branch y lanzada la base de datos, ejecutar en el directorio donde se encuentre el pom.xml, en el caso de practica1, será
+el correspondiente a la practica1, y viserversa con práctica 2:
+
 ```bash
 mvn clean install
 ```
-Si los test pasan correctamente la construcci�n sera correcta.
+
+Si los test pasan correctamente la construcción será correcta.
 
 ### How-to Docker ###
-La base de datos puede ser ejecutada y administrada en un contenedor de docker.
+La base de datos mongodb y mysql pueden ser ejecutadas y administradas en un contenedor de docker.
 ##### Requisitos #####
 - Docker
 - Docker-compose 3.1 o superior.
@@ -33,6 +36,13 @@ Luego se debe ejecutar, igual que en el paso anterior, el script "createDatabase
 
 ### Changelog ###
 
+#### 4.0.0 ####
+
+- Resolucion tp2 etapa2.
+- Agregado mongodb a Docker.
+- Re-estructuración de proyecto según solicitado.
+
+----
 #### 3.0.1 ####
 
 - Resolución ticket #6, consultas getUsersThatReservedOnlyInCities
@@ -64,6 +74,3 @@ y getAllPropertiesReservedByUser
 #### 1.0 ####
 
 - Implementada primera parte.
-
-	
-
