@@ -7,10 +7,7 @@ import java.util.logging.Logger;
 import ar.edu.info.unlp.bd2.etapa2.utils.ReservationCount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.aggregation.Aggregation;
-import org.springframework.data.mongodb.core.aggregation.AggregationResults;
-import org.springframework.data.mongodb.core.aggregation.GroupOperation;
-import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
+import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import ar.edu.info.unlp.bd2.etapa2.utils.ReservationCount;
@@ -18,6 +15,8 @@ import org.springframework.data.domain.Sort;
 import ar.edu.info.unlp.bd2.etapa2.model.Reservation;
 import ar.edu.info.unlp.bd2.etapa2.model.City;
 import ar.edu.info.unlp.bd2.etapa2.model.User;
+
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.project;
 
 public class AirBdbRepository {
 
@@ -67,11 +66,13 @@ public class AirBdbRepository {
 
 
 	public List<ReservationCount> getReservationCountByStatus() {
-		GroupOperation group = Aggregation.group("status").count().as("count");
+		GroupOperation group1 = Aggregation.group("status").count().as("count");
+		ProjectionOperation projectToMatchModel = project()
+				.andExpression("_id").as("status").andExpression("count").as("count");
 		AggregationResults<ReservationCount> countResult =
-				mongoTemplate.aggregate(Aggregation.newAggregation(group),
+				mongoTemplate.aggregate(Aggregation.newAggregation(group1,projectToMatchModel),
 				"reservation",ReservationCount.class);
-		System.out.println();
+
 		return countResult.getMappedResults();
  	}
 
