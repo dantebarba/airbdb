@@ -2,12 +2,14 @@ package ar.edu.info.unlp.bd2.etapa2.repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 import ar.edu.info.unlp.bd2.etapa2.utils.ReservationCount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.GroupOperation;
 import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -21,7 +23,7 @@ public class AirBdbRepository {
 
 	@Autowired
 	MongoTemplate mongoTemplate;
-
+	private static Logger LOGGER = Logger.getLogger("InfoLogging");
 	public <T> T save(T entity) {
 		mongoTemplate.save(entity);
 		return entity;
@@ -65,17 +67,12 @@ public class AirBdbRepository {
 
 
 	public List<ReservationCount> getReservationCountByStatus() {
-		TypedAggregation<Reservation> reservationAggregation =
-				Aggregation.newAggregation(Reservation.class,
-						Aggregation.group("status")
-
-				);
-		AggregationResults<ReservationCount> results = mongoTemplate.
-				aggregate(reservationAggregation, ReservationCount.class);
-
-		List<ReservationCount> studentResultsList = results.getMappedResults();
-
-		return studentResultsList;
+		GroupOperation group = Aggregation.group("status").count().as("count");
+		AggregationResults<ReservationCount> countResult =
+				mongoTemplate.aggregate(Aggregation.newAggregation(group),
+				"reservation",ReservationCount.class);
+		System.out.println();
+		return countResult.getMappedResults();
  	}
 
 }
