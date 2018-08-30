@@ -43,7 +43,7 @@ Luego se debe ejecutar, igual que en el paso anterior, el script "createDatabase
 - Re-estructuración de proyecto según solicitado.
 
 ----
-#### 3.0.1 ####
+#### 3.0.1 ####
 
 - Resolución ticket #6, consultas getUsersThatReservedOnlyInCities
 y getAllPropertiesReservedByUser
